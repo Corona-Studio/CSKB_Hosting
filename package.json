@@ -1,0 +1,16 @@
+{
+  "name": "cs_knowledge_base",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:serve": "vitepress serve docs"
+  },
+  "dependencies": {
+    "vue": "^3.2.37",
+    "vitepress": "^1.0.0-alpha.4",
+    "vitepress-theme-vue": "^1.0.0"
+  }
+}
