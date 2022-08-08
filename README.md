@@ -1,6 +1,7 @@
 # CSKB_Hosting
 
 CSKB 服务端
+[![Deploy](https://github.com/Corona-Studio/CSKB_Hosting/actions/workflows/deploy.yml/badge.svg)](https://github.com/Corona-Studio/CSKB_Hosting/actions/workflows/deploy.yml)
 
 ## 安装本地环境
 
