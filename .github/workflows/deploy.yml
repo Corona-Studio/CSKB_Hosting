@@ -23,6 +23,13 @@ jobs:
 
       - name: Build
         run: yarn docs:build
+        
+      - name: Create File
+        uses: finnp/create-file-action@1.0.0
+        env:
+          FILE_NAME: "docs/.vitepress/dist/CNAME"
+          FILE_DATA: "kb.corona.studio"
+
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
