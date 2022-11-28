@@ -35,6 +35,6 @@ CSKB 服务端
     + .vitepress VitePress 配置
       + theme 主题配置
         - index.js 主题核心配置
-      - config.js 核心配置
+      - config.ts 核心配置
     - index.md 主页
     
