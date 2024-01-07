@@ -10,6 +10,6 @@
   },
   "type": "module",
   "devDependencies": {
-    "vitepress": "^1.0.0-rc.24"
+    "vitepress": "^1.0.0-rc.35"
   }
 }
