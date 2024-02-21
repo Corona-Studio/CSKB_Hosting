@@ -1,1 +1,0 @@
-import{_ as s,c as i,o as a,U as n}from"./chunks/framework.F7EzL_yo.js";const g=JSON.parse('{"title":"docs","description":"","frontmatter":{},"headers":[],"relativePath":"README.md","filePath":"README.md"}'),l={name:"README.md"},e=n("",24),t=[e];function h(p,r,k,o,d,E){return a(),i("div",null,t)}const y=s(l,[["render",h]]);export{g as __pageData,y as default};

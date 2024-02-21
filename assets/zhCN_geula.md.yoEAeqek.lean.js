@@ -1,0 +1,1 @@
+import{_ as t,c as a,o as r,a4 as e}from"./chunks/framework.MTq_KyQ4.js";const p=JSON.parse('{"title":"通用最终用户许可协议","description":"","frontmatter":{},"headers":[],"relativePath":"zhCN/geula.md","filePath":"zhCN/geula.md"}'),d={name:"zhCN/geula.md"},l=e("",46),h=[l];function i(o,n,c,s,u,f){return r(),a("div",null,h)}const _=t(d,[["render",i]]);export{p as __pageData,_ as default};
