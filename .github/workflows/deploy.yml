@@ -10,14 +10,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4.1.1
         with:
           submodules: recursive
           depth: 0
       
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4.0.2
         with:
-          node-version: 18
+          node-version: 20
           cache: yarn
       - run: yarn install --frozen-lockfile
 
@@ -25,14 +25,14 @@ jobs:
         run: yarn docs:build
         
       - name: Create File
-        uses: finnp/create-file-action@1.0.0
+        uses: finnp/create-file-action@2.0.0
         env:
           FILE_NAME: "docs/.vitepress/dist/CNAME"
           FILE_DATA: "kb.corona.studio"
 
 
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v3.9.3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: docs/.vitepress/dist
