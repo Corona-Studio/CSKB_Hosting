@@ -20,7 +20,7 @@ url: /zhCN/lxguide/startup/perOsSetup/linux.md
 
 在 [Azul JDK 官方网站](https://www.azul.com/downloads/#zulu) 中，稍微下拉一点即可看到 JDK 版本筛选框：
 
-![azul-website](/img/lxguide/perOsSetup/azul-website.png)
+![azul-website](/assets/azul-website.Bz9-pqV-.png)
 
 在 **Operating System** 处选择 **Linux**，在 **Architecture** 处选择 **ARM 64-bit**
 即可获取到所有可用的 JDK 版本。

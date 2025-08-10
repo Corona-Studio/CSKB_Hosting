@@ -27,7 +27,7 @@ When you use LauncherX for the first time, you will see LauncherX greet you and 
 
 Click the "Microsoft Account" button in the pop-up window, LauncherX will pop up another window (verification information window) containing a verification link, a one-time verification code and some buttons.
 
-![image-20230222204440416](../../public/img/lxguide/addGameAccount/image-20230222204440416.png)
+![image-20230222204440416](/assets/image-20230222204440416.CbZu2DPU.png)
 
 The entire process takes about 10 seconds to complete (this may take a little longer depending on network performance and whether your browser saves your Microsoft account login information).
 Taking into account Microsoft's privacy policy, we recommend that you complete this process within 3 minutes to avoid invalidation of the one-time verification code. If the one-time code fails, you need to close the current verification information window and repeat the operation of adding a Microsoft account.
@@ -37,7 +37,7 @@ Taking into account Microsoft's privacy policy, we recommend that you complete t
 * Paste the one-time code you copied into the specified location as prompted on the web page. If Microsoft requires you to log in, please log in to your Microsoft account on the web page first.
 * After this window pops up, you need to "agree" to continue adding the account.
 
-![image-20230222204659302](../../public/img/lxguide/addGameAccount/image-20230222204659302.png)
+![image-20230222204659302](/assets/image-20230222204659302.3ad4zMoe.png)
 
 While LauncherX is verifying your account, you can continue with the next step of setup.
 
@@ -45,13 +45,13 @@ If you think the verification process is too slow or failing, consider optimizin
 
 #### Unexpected situation: Edge browser pops up requiring security verification device:
 
-![image-20230222204732083](../../public/img/lxguide/addGameAccount/image-20230222204732083.png)
+![image-20230222204732083](/assets/image-20230222204732083.BMhcgG6A.png)
 
 For this case, you need:
 
 * Hit "Cancel"
-* Click "Other login methods" on the web page, as shown in the figure:![image-20230222204925338](../../public/img/lxguide/addGameAccount/image-20230222204925338.png)
-* Click "Use my password" or choose any login method that's convenient for you: ![image-20230222205034775](../../public/img/lxguide/addGameAccount/image-20230222205034775.png)
+* Click "Other login methods" on the web page, as shown in the figure:![image-20230222204925338](/assets/image-20230222204925338.kW0y5m6W.png)
+* Click "Use my password" or choose any login method that's convenient for you: ![image-20230222205034775](/assets/image-20230222205034775.BycQG9xY.png)
 
 ### Offline Mode
 
@@ -74,7 +74,7 @@ To do this, you need to prepare:
 
 Click "External Login" to get started.
 
-* A window as shown in the picture will pop up: ![image-20230227091559255](../../public/img/lxguide/addGameAccount/image-20230227091559255.png)
+* A window as shown in the picture will pop up: ![image-20230227091559255](/assets/image-20230227091559255.BP6hakQE.png)
 * Enter the information you should have prepared previously
 * Save account. This information will be encrypted and used as credentials, which will be used for verification after you log in to the server that supports the corresponding AuthLib service.
 

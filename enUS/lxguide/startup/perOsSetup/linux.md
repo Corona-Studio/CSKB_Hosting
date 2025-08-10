@@ -20,7 +20,7 @@ Here we're gonna use [Azul JDK](https://www.azul.com/downloads/#zulu) to demonst
 
 At [Azul JDK Website](https://www.azul.com/downloads/#zulu) , scroll down a little to see the JDK version filter box:
 
-![azul-website](../../../../public/img/lxguide/perOsSetup/azul-website.png)
+![azul-website](/assets/azul-website.Bz9-pqV-.png)
 
 At **Operating System**, select **Linux**, and at **Architecture**, select **ARM 64-bit**
 to get get all available JDK versions.

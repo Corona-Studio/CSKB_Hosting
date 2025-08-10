@@ -36,7 +36,7 @@ url: /zhCN/lxguide/others/download-jre.md
 
 访问 https://www.azul.com/downloads/#zulu ，找到**下载区域**。如图所示的是版本筛选框.
 
-![azul-website](/img/lxguide/perOsSetup/azul-website.png)
+![azul-website](/assets/azul-website.Bz9-pqV-.png)
 
 1. 在 **Operating System** 处选择 Windows/macOS/Linux(请自行选择子版本/发行版)，
 2. 在 **Architecture** 处选择 **x86 64-bit或ARM 64-bit** (前者是一般的amd64/x86-64架构，后者是ARM架构。)

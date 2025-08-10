@@ -161,6 +161,7 @@
 - [安裝器](/zhTW/projbobcat/installers.md)
 - [对本类文档的解释：什么是“专题”，什么是“分类”：](/zhCN/lxguide/settings.md)
 - [常见名词解释](/zhCN/lxguide/others/general.md)
+- [常见问题](/zhCN/lxguide/faq.md)
 - [建立和配置補全器](/zhTW/projbobcat/resourceCompleter/createAndConfigCompleter.md)
 - [开始](/zhCN/lxguide/startup.md)
 - [怎么做到的？好怪，再看一眼](/zhCN/lxguide/features/tricks.md)
