@@ -13,6 +13,6 @@
     "vitepress": "^1.6.4"
   },
   "dependencies": {
-    "vitepress-plugin-llms": "^1.7.2"
+    "vitepress-plugin-llms": "^1.10.0"
   }
 }
