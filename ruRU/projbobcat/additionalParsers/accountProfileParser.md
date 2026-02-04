@@ -1,0 +1,18 @@
+---
+url: /ruRU/projbobcat/additionalParsers/accountProfileParser.md
+---
+# Парсер игровых аккаунтов
+
+Парсер игровых профилей отвечает за запись учетных записей пользователей в файл конфигурации официального лаунчера.
+
+## Инициализация парсера
+
+Способ инициализации парсера очень прост:
+
+```c#
+var launcherAccountParser
+    = new DefaultLauncherAccountParser(rootPath, clientToken)
+```
+
+Где **rootPath** — это корневой каталог, в котором находится ядро (т. е. каталог, в котором находится папка .minecraft).
+**clientToken** — это случайно сгенерированный GUID.

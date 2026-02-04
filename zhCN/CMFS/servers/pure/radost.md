@@ -18,3 +18,5 @@ url: /zhCN/CMFS/servers/pure/radost.md
 群聊：`805935004`
 
 :::
+
+**关于共建和其他更多信息，参见：** [帮助：Radost](/zhCN/CMFS/help/guide-radost/)

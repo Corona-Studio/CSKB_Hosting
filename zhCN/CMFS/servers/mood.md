@@ -1,0 +1,6 @@
+---
+url: /zhCN/CMFS/servers/mood.md
+---
+# CMFS-Mood
+
+由我们打造并运营的模组服务器系列。

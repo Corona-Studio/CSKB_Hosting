@@ -17,6 +17,8 @@ url: /zhCN/CMFS/servers/pure/survival.md
 
 :::
 
+**其他更多信息，参见：** [帮助：Pure](/zhCN/CMFS/help/guide-pure/)
+
 ## 规则
 
 * 不许开挂，不许恶意杀人，不许卡破坏性bug，不许卡服
@@ -24,6 +26,7 @@ url: /zhCN/CMFS/servers/pure/survival.md
 * 玩家可以借助木斧测距，但是没有其他建筑功能
 * 禁止在历史问题遗留区域制造世吞等会造成连续爆炸和方块破坏的机械（区域：1752 6056; 1752 -312; 8384 -312; 8384 6056）
 * 禁止其他违反公序良俗的行为
+* 完整规则，参见：[Pure生存服详细规则](/zhCN/CMFS/help/guide-pure/survival-rules)
 
 ## 玩法
 
@@ -41,3 +44,4 @@ url: /zhCN/CMFS/servers/pure/survival.md
 * 幻翼骑乘！建筑玩家狂喜2333
 * 双主世界！我们将旧时代的CMFS原版生存服的主世界接入到了此服务器，去参观以前内部人员的建造吧！
 * 还有更多实用小命令等你尝试！`/report`、`/joke`、`/logoff`、`/random-info`...
+* 相关阅读：[Pure命令详解](/zhCN/CMFS/help/guide-pure/survival-commands) | [Pure玩法详解](/zhCN/CMFS/help/guide-pure/survival-gameplay)

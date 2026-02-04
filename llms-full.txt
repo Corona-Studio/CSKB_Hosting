@@ -317,95 +317,6 @@ In the above code block, please replace these parameters according to your actua
 ---
 
 ---
-url: /ruRU/projbobcat/resourceCompleter/resourceInfoResolver/assetInfoResolver.md
----
-# Assets 解析器
-
-\[\[toc]]
-
-Assets 解析器提供了对游戏资产文件的解析和验证功能, 这些文件一般存放在
-`.minecraft/assets` 目录下
-
-## 获取 Version Manifest Versions 列表
-
-首先, 您需要向 <https://launchermeta.mojang.com/mc/game/version_manifest.json>
-发送一个 **HTTP GET** 请求.
-
-您将看到类似下面的返回内容：
-
-```json
-
-{
-  "latest": {
-    "release": "1.19.3",
-    "snapshot": "23w06a"
-  },
-  "versions": [
-    {
-      "id": "23w06a",
-      "type": "snapshot",
-      "url": "https://piston-meta.mojang.com/v1/packages/92ed97b686fe8904d8ec00fd486c435582fd0155/23w06a.json",
-      "time": "2023-02-08T15:11:06+00:00",
-      "releaseTime": "2023-02-08T15:00:04+00:00"
-    },
-    ...
-  ]
-}
-
-```
-
-Mojang 服务器将会返回一个 JSON 对象, **versions** 字段则是我们所需要的 Versions 数组
-
-### 将 JSON 返回转换为 ProjBobcat 类型
-
-如果您在您的项目中使用 [JSON.NET](https://www.newtonsoft.com/json)（Newtonsoft.JSON）.
-您可以使用类似下面的代码来将您获取到的服务器响应转换为对应的 ProjBobcat 类型：
-
-```c#
-
-// 从 Mojang API 请求数据（示例, 非实际代码）
-...
-var responseJson = await res.Content.ReadAsStringAsync();
-
-// 将 JSON 响应转换为 ProjBobcat 类型 // [!code focus]
-var manifest = JsonConvert.DeserializeObject<VersionManifest>(responseJson); // [!code focus]
-
-// 获取 Versions 列表 // [!code focus]
-var versions = manifest.Versions; // [!code focus]
-
-```
-
-此处, **versions** 即是 Assets 解析器所需要的 `Versions` 数组.
-
-## 初始化解析器
-
-你可以通过下面的代码来初始化 Assets 解析器：
-
-```c#
-
-var resolver = new AssetInfoResolver
-{
-    AssetIndexUriRoot = "https://launchermeta.mojang.com/",
-    AssetUriRoot = "https://resources.download.minecraft.net/",
-    BasePath = "[GAME_ROOT_PATH]",
-    VersionInfo = [SEARCHED_VERSION_INFO],
-    CheckLocalFiles = [CHECK_LOCAL_FILES],
-    Versions = versions // 在上一步获取到的 Versions 数组
-};
-
-```
-
-在上述代码块中, 请将这些参数按照您的实际情况替换：
-
-|           项目            |               说明                |
-|:-----------------------:|:-------------------------------:|
-|    \[GAME\_ROOT\_PATH]     |   游戏根目录, 通常为 .minecraft 文件夹的路径   |
-| \[SEARCHED\_VERSION\_INFO] | 要检查的版本的 VersionInfo （通过游戏定位器获得） |
-|   \[CHECK\_LOCAL\_FILES]   |    检查本地文件（如果为 false, 则跳过所有检查）    |
-
----
-
----
 url: /zhCN/projbobcat/resourceCompleter/resourceInfoResolver/assetInfoResolver.md
 ---
 # Assets 解析器
@@ -669,6 +580,8 @@ url: /zhCN/CMFS/servers/pure/survival.md
 
 :::
 
+**其他更多信息，参见：** [帮助：Pure](/zhCN/CMFS/help/guide-pure/)
+
 ## 规则
 
 * 不许开挂，不许恶意杀人，不许卡破坏性bug，不许卡服
@@ -676,6 +589,7 @@ url: /zhCN/CMFS/servers/pure/survival.md
 * 玩家可以借助木斧测距，但是没有其他建筑功能
 * 禁止在历史问题遗留区域制造世吞等会造成连续爆炸和方块破坏的机械（区域：1752 6056; 1752 -312; 8384 -312; 8384 6056）
 * 禁止其他违反公序良俗的行为
+* 完整规则，参见：[Pure生存服详细规则](/zhCN/CMFS/help/guide-pure/survival-rules)
 
 ## 玩法
 
@@ -693,6 +607,7 @@ url: /zhCN/CMFS/servers/pure/survival.md
 * 幻翼骑乘！建筑玩家狂喜2333
 * 双主世界！我们将旧时代的CMFS原版生存服的主世界接入到了此服务器，去参观以前内部人员的建造吧！
 * 还有更多实用小命令等你尝试！`/report`、`/joke`、`/logoff`、`/random-info`...
+* 相关阅读：[Pure命令详解](/zhCN/CMFS/help/guide-pure/survival-commands) | [Pure玩法详解](/zhCN/CMFS/help/guide-pure/survival-gameplay)
 
 ---
 
@@ -706,6 +621,26 @@ url: /zhCN/CMFS/help.md
 这里提供了一些您可能需要的服务器游戏帮助。
 
 :::
+
+---
+
+---
+url: /zhCN/CMFS/servers/mood.md
+---
+# CMFS-Mood
+
+由我们打造并运营的模组服务器系列。
+
+---
+
+---
+url: /zhCN/CMFS/servers/pure.md
+---
+# CMFS-Pure
+
+这是一个包含一切我们能想象到的原版玩法的群组服务器，接入了包含：生存、小游戏、(非公开)创造 等服务器，以后视情况也将开放：空岛生存、原版创造、原版RPG 等新的子服玩法！此外，我们等待有志向的伙伴来参与共建新的小游戏玩法！（见：）
+
+通过CSKB的目录来展开查看接入Pure群组的子服务器。
 
 ---
 
@@ -729,6 +664,8 @@ url: /zhCN/CMFS/servers/pure/radost.md
 群聊：`805935004`
 
 :::
+
+**关于共建和其他更多信息，参见：** [帮助：Radost](/zhCN/CMFS/help/guide-radost/)
 
 ---
 
@@ -1193,86 +1130,6 @@ Among them, **args.Progress** indicates the current percentage progress of the i
 ---
 
 ---
-url: /ruRU/projbobcat/installers/curseforge.md
----
-# CurseForge 整合包安装器
-
-\[\[toc]]
-
-::: tip
-
-请注意, ProjBobcat 仅实现了 CurseForge 整合包的自动化安装流程, 您仍然需要自己实现 CurseForge 整合包的搜索、下载、保存流程.
-
-:::
-
-## 实用资源
-
-* [CurseForge 官方网站](https://www.curseforge.com/)
-* [CurseForge API](https://docs.curseforge.com/)
-
-## 初始化安装器
-
-初始化 CurseForge 安装器的方式非常简单：
-
-```c#
-
-var curseForgeInstaller = new CurseForgeInstaller
-{
-    GameId = "[CUSTOM_INSTALL_GAME_ID]",
-    ModPackPath = "[PATH_TO_YOUR_MODPACK]",
-    RootPath = "[GAME_ROOT_PATH]"
-};
-
-```
-
-在上述代码块中, 请将这些参数按照您的实际情况替换：
-
-|                  项目                  |             说明              |
-|:------------------------------------:|:---------------------------:|
-|           \[GAME\_ROOT\_PATH]           | 游戏根目录, 通常为 .minecraft 文件夹的路径 |
-|       \[CUSTOM\_INSTALL\_GAME\_ID]       |     可选项, 自定义即将要安装的游戏的名称      |
-|        \[PATH\_TO\_YOUR\_MODPACK]        |     CurseForge 整合包所在的路径     |
-
-## 开始安装
-
-在您完成安装器的初始化后, 您只需要调用 CurseForge 安装器的安装方法来完成安装.
-
-在异步上下文中, 使用 **InstallTaskAsync** 来完成安装：
-
-```c#
-
-await curseForgeInstaller.InstallTaskAsync();
-
-```
-
-在同步上下文中, 使用 **Install** 来完成安装：
-
-```c#
-
-curseForgeInstaller.Install();
-
-```
-
-## 报告安装进度
-
-在某些情况下, CurseForge 安装器可能会需要数分钟的时间来完成安装.
-因此, 您可能需要实时向用户汇报安装器目前的进度.
-为此, CurseForge 安装器提供了 **StageChangedEventDelegate** 事件来帮助您实现任务汇报.
-您只需要简单地在 **开始安装之前** 注册下面的事件：
-
-```c#
-
-curseForgeInstaller.StageChangedEventDelegate += (_, args) => {
-    ReportProgress(args.Progress, args.CurrentStage);
-};
-
-```
-
-其中,  **args.Progress** 指示了安装器当前的百分比进度. **args.CurrentStage** 则是安装器当前进度的文字描述.
-
----
-
----
 url: /zhCN/projbobcat/installers/curseforge.md
 ---
 # CurseForge 整合包安装器
@@ -1666,161 +1523,6 @@ fabricInstaller.StageChangedEventDelegate += (_, args) => {
 ```
 
 Among them, **args.Progress** indicates the current percentage progress of the installer. **args.CurrentStage** is a text description of the current progress of the installer.
-
----
-
----
-url: /ruRU/projbobcat/installers/fabric.md
----
-# Fabric 安装器
-
-\[\[toc]]
-
-::: tip
-
-请注意, ProjBobcat 仅实现了 Fabric 自动化安装流程, 您仍然需要自己实现 Fabric 安装包的搜索、下载、保存流程.
-
-:::
-
-## 实用资源
-
-* [Fabric 官方网站](https://fabricmc.net/)
-* [Fabric Meta API](https://meta.fabricmc.net/)
-
-## 获取 Fabric Loader Artifact
-
-由于 ProjBobcat 的 Fabric 安装器要求您在初始化安装器时提供来自 Fabric 官方的 Loader Artifact 信息.
-因此, 我们将在这里简要描述如何根据指定的 MineCraft 版本来获取该信息.
-
-::: info
-
-在该示例中, 我们将使用 MineCraft 1.19.2 来向您展示如何获取.
-
-:::
-
-### 向 Fabric Meta API 发送请求
-
-首先, 您需要向 [https://meta.fabricmc.net/v2/versions/loader/\[MC\_VERSION\]](https://meta.fabricmc.net/v2/versions/loader/1.19.2) 发送一个 **HTTP GET** 请求.
-将 `[MC_VERSION]` 替换为您想要安装的 MineCraft 版本. 在这里, 我们将使用 1.19.2.
-
-您将看到类似下面的返回内容：
-
-```json
-
-[
-  {
-    "loader": {
-      "separator": ".",
-      "build": 11,
-      "maven": "net.fabricmc:fabric-loader:0.14.11",
-      "version": "0.14.11",
-      "stable": true
-    },
-    "intermediary": {
-      "maven": "net.fabricmc:intermediary:1.19.2",
-      "version": "1.19.2",
-      "stable": true
-    },
-    "launcherMeta": {
-      "version": 1,
-      "libraries": {...},
-      "mainClass": {...}
-    }
-  },
-  {...},
-  {...}
-]
-
-```
-
-Fabric Meta API 将返回一个 JSON 数组, 数组中的每一个元素即是我们需要的 Loader Artifact.
-
-#### 将 JSON 返回转换为 ProjBobcat 类型
-
-如果您在您的项目中使用 [JSON.NET](https://www.newtonsoft.com/json)（Newtonsoft.JSON）.
-您可以使用类似下面的代码来将您获取到的服务器响应转换为对应的 ProjBobcat 类型：
-
-```c#
-
-// 从 Fabric Meta API 请求数据（示例, 非实际代码）
-...
-var responseJson = await res.Content.ReadAsStringAsync();
-
-// 将 JSON 响应转换为 ProjBobcat 类型 // [!code focus]
-var artifacts = JsonConvert.DeserializeObject<List<FabricLoaderArtifactModel>>(responseJson); // [!code focus]
-
-// 获取用户想要安装的版本（示例, 非实际代码）
-var userSelect = vm.SelectedArtifactIndex;
-
-// 获取单个 Loader Artifact // [!code focus]
-var selectedArtifact = artifacts[userSelect]; // [!code focus]
-
-```
-
-此处, **selectedArtifact** 即是 Fabric 安装器所需要的 `FabricLoaderArtifactModel`.
-
-## 初始化安装器
-
-初始化 Fabric 安装器的方式非常简单. 您需要使用到在先前步骤中取得的 `selectedArtifact` 来初始化安装器：
-
-```c#
-
-var fabricInstaller = new FabricInstaller
-{
-    LoaderArtifact = selectedArtifact,
-    VersionLocator = [VERSION_LOCATOR_INST],
-    RootPath = "[GAME_ROOT_PATH]",
-    CustomId = "[CUSTOM_INSTALL_GAME_ID]",
-    InheritsFrom = "[MC_VERSION_OR_GAME_ID]"
-};
-
-```
-
-在上述代码块中, 请将这些参数按照您的实际情况替换：
-
-|                 项目                  |                      说明                       |
-|:-----------------------------------:|:---------------------------------------------:|
-|          \[GAME\_ROOT\_PATH]           |          游戏根目录, 通常为 .minecraft 文件夹的路径          |
-|      \[CUSTOM\_INSTALL\_GAME\_ID]       |              可选项, 自定义即将要安装的游戏的名称               |
-|       \[MC\_VERSION\_OR\_GAME\_ID]       | Forge 继承的 MineCraft 原版游戏版本, 通常为游戏版本. 例如：1.19.2  |
-|       \[VERSION\_LOCATOR\_INST]        |  游戏版本定位器实例, 即初始化游戏核心时的 **VersionLocator** 属性   |
-
-## 开始安装
-
-在您完成安装器的初始化后, 您只需要调用 Fabric 安装器的安装方法来完成安装.
-
-在异步上下文中, 使用 **InstallTaskAsync** 来完成安装：
-
-```c#
-
-await fabricInstaller.InstallTaskAsync();
-
-```
-
-在同步上下文中, 使用 **Install** 来完成安装：
-
-```c#
-
-fabricInstaller.Install();
-
-```
-
-## 报告安装进度
-
-在某些情况下, Fabric 安装器可能会需要数分钟的时间来完成安装.
-因此, 您可能需要实时向用户汇报安装器目前的进度.
-为此, Fabric 安装器提供了 **StageChangedEventDelegate** 事件来帮助您实现任务汇报.
-您只需要简单地在 **开始安装之前** 注册下面的事件：
-
-```c#
-
-fabricInstaller.StageChangedEventDelegate += (_, args) => {
-    ReportProgress(args.Progress, args.CurrentStage);
-};
-
-```
-
-其中,  **args.Progress** 指示了安装器当前的百分比进度. **args.CurrentStage** 则是安装器当前进度的文字描述.
 
 ---
 
@@ -2288,175 +1990,6 @@ You simply need to register for the following event **before starting the instal
 ```
 
 Among them, **args.Progress** indicates the current percentage progress of the installer. **args.CurrentStage** is a text description of the current progress of the installer.
-
----
-
----
-url: /ruRU/projbobcat/installers/forge.md
----
-# Forge 安装器
-
-在 ProjBobcat 中, 我们支持了几乎所有主流 MineCraft 版本的 Forge 自动化安装.
-
-\[\[toc]]
-
-::: tip
-
-请注意, ProjBobcat 仅实现了 Forge 自动化安装流程, 您仍然需要自己实现 Forge 安装包的搜索、下载、保存流程.
-
-:::
-
-## 判断应该使用哪一种 Forge 安装器
-
-由于 Forge 团队在后续的版本中修改了 Forge 的打包规范以及安装流程. 因此, 您需要手动判断应该使用哪一种安装器.
-在 ProjBobcat 中, 我们已经为您实现了相关的判断逻辑. 您只需要简单地调用下面的方法：
-
-```c#
-
-var mcVersion = "[MC_VERSION]";
-var forgeJarPath = "[PATH_TO_YOUR_FORGE_INSTALLER]";
-var forgeVersion = ForgeInstallerFactory.GetForgeArtifactVersion(mcVersion, "[FORGE_VERSION]");
-
-var isLegacy = ForgeInstallerFactory.IsLegacyForgeInstaller(forgeJarPath, forgeVersion);  // [!code focus]
-
-```
-
-在上述代码块中, 请将这些参数按照您的实际情况替换：
-
-|               项目                |                     说明                     |
-|:-------------------------------:|:------------------------------------------:|
-|          \[MC\_VERSION]           |    将 Forge 安装到的 MineCraft 版本, 例如：1.19.2     |
-| \[PATH\_TO\_YOUR\_FORGE\_INSTALLER]  |           Forge 安装器 .jar 文件所在的路径           |
-|         \[FORGE\_VERSION]         |      Forge 的具体版本, 通常为 XX.X.X, 例如：43.2.0      |
-
-在您完成替换并成功执行上述的代码片段之后, **isLegacy** 会指示当前 Forge 安装器应当使用哪一种 Forge 安装器.
-
-## 初始化旧版安装器
-
-如果在上面的流程中, **isLegacy** 的值为 **true**, 这意味着您需要使用旧版安装器来完成 Forge 的安装.
-要初始化旧版安装器, 只需实例化 **LegacyForgeInstaller** 并提供相应的参数：
-
-```c#
-
-IForgeInstaller forgeInstaller =
-    new LegacyForgeInstaller
-            {
-                ForgeExecutablePath = "[PATH_TO_YOUR_FORGE_INSTALLER]",
-                RootPath = "[GAME_ROOT_PATH]",
-                CustomId = "[CUSTOM_INSTALL_GAME_ID]",
-                ForgeVersion = "[FORGE_VERSION]",
-                InheritsFrom = "[MC_VERSION_OR_GAME_ID]"
-            };
-
-```
-
-在上述代码块中, 请将这些参数按照您的实际情况替换：
-
-|                 项目                 |                      说明                      |
-|:----------------------------------:|:--------------------------------------------:|
-|          \[GAME\_ROOT\_PATH]          |         游戏根目录, 通常为 .minecraft 文件夹的路径          |
-|      \[CUSTOM\_INSTALL\_GAME\_ID]      |              可选项, 自定义即将要安装的游戏的名称              |
-|      \[MC\_VERSION\_OR\_GAME\_ID]       | Forge 继承的 MineCraft 原版游戏版本, 通常为游戏版本. 例如：1.19.2 |
-
-## 初始化新版安装器
-
-```c#
-
-IForgeInstaller forgeInstaller =
-    new HighVersionForgeInstaller
-            {
-                ForgeExecutablePath = "[PATH_TO_YOUR_FORGE_INSTALLER]",
-                JavaExecutablePath = "[PATH_TO_YOUR_JAVA_RUNTIME]",
-                RootPath = "[GAME_ROOT_PATH]",
-                VersionLocator = [VERSION_LOCATOR_INST],
-                DownloadUrlRoot = “[LIBRARIES_URL_ROOT]”,
-                CustomId = "[CUSTOM_INSTALL_GAME_ID]",
-                MineCraftVersion = "[MC_VERSION]",
-                MineCraftVersionId = "[ACTUAL_MC_GAME_ID]",
-                InheritsFrom = "[MC_VERSION_OR_GAME_ID]"
-            };
-
-```
-
-在上述代码块中, 请将这些参数按照您的实际情况替换：
-
-|                 项目                  |                                      说明                                       |
-|:-----------------------------------:|:-----------------------------------------------------------------------------:|
-|     \[PATH\_TO\_YOUR\_JAVA\_RUNTIME]     |                           Java （javaw.exe） 运行时所在的路径                           |
-|        \[LIBRARIES\_URL\_ROOT]         |                下载源的根 URL, 例如："https://bmclapi2.bangbang93.com/"                |
-|       \[VERSION\_LOCATOR\_INST]        |                  游戏版本定位器实例, 即初始化游戏核心时的 **VersionLocator** 属性                   |
-|         \[ACTUAL\_MC\_GAME\_ID]         | 实际的 MineCraft 游戏名称, 即原版游戏在 **version** 文件夹下的名称. 一般情况下, 这个值和 **\[MC\_VERSION]** 一致.  |
-
-## 根据 **isLegacy** 值进行统一初始化
-
-由于 **LegacyForgeInstaller** 和 **HighVersionForgeInstaller** 同时实现了 **IForgeInstaller** 接口.
-因此, 您可以很方便的使用一个三元运算符来选择性的初始化对应的安装器：
-
-```c#{4-100}
-
-var isLegacy = ForgeInstallerFactory.IsLegacyForgeInstaller(forgeJarPath, forgeVersion);
-
-IForgeInstaller forgeInstaller = isLegacy
-            ? new LegacyForgeInstaller
-            {
-                ForgeExecutablePath = "[PATH_TO_YOUR_FORGE_INSTALLER]",
-                RootPath = "[GAME_ROOT_PATH]",
-                CustomId = "[CUSTOM_INSTALL_GAME_ID]",
-                ForgeVersion = "[FORGE_VERSION]",
-                InheritsFrom = "[MC_VERSION_OR_GAME_ID]"
-            }
-            : new HighVersionForgeInstaller
-            {
-                ForgeExecutablePath = "[PATH_TO_YOUR_FORGE_INSTALLER]",
-                JavaExecutablePath = "[PATH_TO_YOUR_JAVA_RUNTIME]",
-                RootPath = "[GAME_ROOT_PATH]",
-                VersionLocator = [VERSION_LOCATOR_INST],
-                DownloadUrlRoot = “[LIBRARIES_URL_ROOT]”,
-                CustomId = "[CUSTOM_INSTALL_GAME_ID]",
-                MineCraftVersion = "[MC_VERSION]",
-                MineCraftVersionId = "[ACTUAL_MC_GAME_ID]",
-                InheritsFrom = "[MC_VERSION_OR_GAME_ID]"
-            };
-
-```
-
-## 开始安装
-
-在您完成安装器的初始化后, 您只需要调用 Forge 安装器的安装方法来完成安装.
-
-在异步上下文中, 使用 **InstallForgeTaskAsync** 来完成安装：
-
-```c#
-
-await forgeInstaller.InstallForgeTaskAsync();
-
-```
-
-在同步上下文中, 使用 **InstallForge** 来完成安装：
-
-```c#
-
-forgeInstaller.InstallForge();
-
-```
-
-## 报告安装进度
-
-在某些情况下, Forge 安装器可能会需要数分钟的时间来完成安装.
-因此, 您可能需要实时向用户汇报安装器目前的进度.
-为此, Forge 安装器提供了 **StageChangedEventDelegate** 事件来帮助您实现任务汇报.
-您只需要简单地在 **开始安装之前** 注册下面的事件：
-
-```c#
-
-((InstallerBase)forgeInstaller).StageChangedEventDelegate += (_, args) =>
-{
-    ReportProgress(args.Progress * 100, args.CurrentStage);
-};
-
-```
-
-其中,  **args.Progress** 指示了安装器当前的百分比进度. **args.CurrentStage** 则是安装器当前进度的文字描述.
 
 ---
 
@@ -3599,46 +3132,6 @@ In the above code block, please replace these parameters according to your actua
 ---
 
 ---
-url: /ruRU/projbobcat/resourceCompleter/resourceInfoResolver/libraryInfoResolver.md
----
-# Libraries 解析器
-
-\[\[toc]]
-
-Libraries 解析器提供了对游戏资产文件的解析和验证功能, 这些文件存放在
-`.minecraft/libraries` 目录下, 这些文件是启动 MineCraft 所必需的运行时文件.
-
-## 初始化解析器
-
-你可以通过下面的代码来初始化 Libraries 解析器：
-
-```c#
-
-var resolver = new LibraryInfoResolver
-{
-    BasePath = "[GAME_ROOT_PATH]",
-    ForgeUriRoot = "https://files.minecraftforge.net/maven/",
-    ForgeMavenUriRoot = "https://maven.minecraftforge.net/",
-    ForgeMavenOldUriRoot = "https://files.minecraftforge.net/maven/",
-    FabricMavenUriRoot = "https://maven.fabricmc.net/",
-    LibraryUriRoot = "https://libraries.minecraft.net/",
-    VersionInfo = [SEARCHED_VERSION_INFO],
-    CheckLocalFiles = [CHECK_LOCAL_FILES]
-};
-
-```
-
-在上述代码块中, 请将这些参数按照您的实际情况替换：
-
-|           项目            |               说明                |
-|:-----------------------:|:-------------------------------:|
-|    \[GAME\_ROOT\_PATH]     |   游戏根目录, 通常为 .minecraft 文件夹的路径   |
-| \[SEARCHED\_VERSION\_INFO] | 要检查的版本的 VersionInfo （通过游戏定位器获得） |
-|   \[CHECK\_LOCAL\_FILES]   |    检查本地文件（如果为 false, 则跳过所有检查）    |
-
----
-
----
 url: /zhCN/projbobcat/resourceCompleter/resourceInfoResolver/libraryInfoResolver.md
 ---
 # Libraries 解析器
@@ -4102,186 +3595,6 @@ Among them, **args.Progress** indicates the current percentage progress of the i
 ---
 
 ---
-url: /ruRU/projbobcat/installers/liteloader.md
----
-# LiteLoader 安装器
-
-\[\[toc]]
-
-::: tip
-
-请注意, ProjBobcat 仅实现了 LiteLoader 自动化安装流程, 您仍然需要自己实现 LiteLoader 安装包的搜索、下载、保存流程.
-
-:::
-
-::: warning
-
-LiteLoader 作为早期 MineCraft 的模组系统, 已经长期缺乏维护和后续支持.
-因此, 我们可能会在后续的版本中移除对 LiteLoader 安装的支持.
-
-:::
-
-## 实用资源
-
-* [LiteLoader Versions API](https://dl.liteloader.com/versions/versions.json)
-* [BMCLAPI 开发文档](https://bmclapidoc.bangbang93.com/)
-
-## 获取 LiteLoader Download Version Model
-
-由于 ProjBobcat 的 LiteLoader 安装器要求您在初始化安装器时提供来自 LiteLoader 的下载信息.
-因此, 我们将在这里简要描述如何根据指定的 MineCraft 版本来获取该信息.
-
-::: info
-
-在该示例中, 我们将使用 MineCraft 1.7.10 来向您展示如何获取.
-
-:::
-
-::: warning
-
-由于 LiteLoader 官方没有提供公开的 API 文档. 因此, 在本流程中, 我们需要使用第三方的镜像源来完成数据的获取.
-在这里, 我们使用 [BMCLAPI](https://bmclapidoc.bangbang93.com/) 来获取相关的版本信息.
-
-:::
-
-首先, 您需要向 [https://bmclapi2.bangbang93.com/liteloader/list?mcversion=\[MC\_VERSION\]](https://bmclapi2.bangbang93.com/liteloader/list?mcversion=1.7.10) 发送一个 **HTTP GET** 请求.
-将 `[MC_VERSION]` 替换为您想要安装的 MineCraft 版本. 在这里, 我们将使用 1.7.10.
-
-您将看到类似下面的返回内容：
-
-```json
-
-{
-  "_id": "59685511433f993503c1c879",
-  "mcversion": "1.7.10",
-  "build": {
-    "tweakClass": "com.mumfrey.liteloader.launch.LiteLoaderTweaker",
-    "libraries": [...],
-    "stream": "RELEASE",
-    "file": "liteloader-1.7.10.jar",
-    "version": "1.7.10_04",
-    "md5": "63ada46e033d0cb6782bada09ad5ca4e",
-    "timestamp": "1414368553",
-    "srcJar": "liteloader-1.7.10_04-mcpnames-sources.jar",
-    "mcpJar": "liteloader-1.7.10_04-mcpnames.jar"
-  },
-  "hash": "63ada46e033d0cb6782bada09ad5ca4e",
-  "type": "RELEASE",
-  "version": "1.7.10_04",
-  "__v": 0
-}
-
-```
-
-BMCLAPI 将返回一个 JSON 对象, 将该对象反序列化为 ProjBobcat 类型即是我们需要的 `LiteLoaderDownloadVersionModel`.
-
-#### 将 JSON 返回转换为 ProjBobcat 类型
-
-如果您在您的项目中使用 [JSON.NET](https://www.newtonsoft.com/json)（Newtonsoft.JSON）.
-您可以使用类似下面的代码来将您获取到的服务器响应转换为对应的 ProjBobcat 类型：
-
-```c#
-
-// 从 BMCLAPI 请求数据（示例, 非实际代码）
-...
-var responseJson = await res.Content.ReadAsStringAsync();
-
-// 将 JSON 响应转换为 ProjBobcat 类型 // [!code focus]
-var versionModel = JsonConvert.DeserializeObject<LiteLoaderDownloadVersionModel>(responseJson); // [!code focus]
-
-```
-
-此处, **versionModel** 即是 Fabric 安装器所需要的 `LiteLoaderDownloadVersionMode`.
-
-## 获取 RawVersionModel
-
-在初始化 LiteLoader 安装器时, 安装器需要使用 LiteLoader 对应的 MineCraft 游戏版本的原始 JSON 内容.
-即 `[ROOT_PATH]/versions/[MC_VERSION]/[MC_VERSION].json` 文件的内容.
-
-如果您已经安装了 LiteLoader 对应的原版游戏, 您可以通过下面的代码获取到 `RawVersionModel`：
-
-```c#
-
-// 获取版本 JSON 文件所在的路径
-var jsonPath = GamePathHelper.GetGameJsonPath(rP, id);
-
-// 读取该文件的内容
-var jsonContent = await File.ReadAllTextAsync(jsonPath);
-
-// 将 JSON 内容转换为 RawVersionModel
-var baseVersionModel = JsonConvert.DeserializeObject<RawVersionModel>(jsonContent);
-
-```
-
-此处, **baseVersionModel** 即是 LiteLoader 安装器所需要的 `RawVersionModel`.
-
-## 初始化安装器
-
-初始化 LiteLoader 安装器的方式非常简单.
-您需要使用到在先前步骤中取得的 `versionModel` 和 `baseVersionModel` 来初始化安装器：
-
-```c#
-
-var liteLoaderInstaller = new LiteLoaderInstaller
-{
-    InheritVersion = baseVersionModel,
-    InheritsFrom = "[MC_VERSION_OR_GAME_ID]",
-    RootPath = "[GAME_ROOT_PATH]",
-    VersionModel = versionModel,
-    CustomId = "[CUSTOM_INSTALL_GAME_ID]"
-};
-
-```
-
-在上述代码块中, 请将这些参数按照您的实际情况替换：
-
-|                 项目                  |                      说明                       |
-|:-----------------------------------:|:---------------------------------------------:|
-|          \[GAME\_ROOT\_PATH]           |          游戏根目录, 通常为 .minecraft 文件夹的路径          |
-|      \[CUSTOM\_INSTALL\_GAME\_ID]       |              可选项, 自定义即将要安装的游戏的名称               |
-|       \[MC\_VERSION\_OR\_GAME\_ID]       | Forge 继承的 MineCraft 原版游戏版本, 通常为游戏版本. 例如：1.19.2  |
-|       \[VERSION\_LOCATOR\_INST]        |  游戏版本定位器实例, 即初始化游戏核心时的 **VersionLocator** 属性   |
-
-## 开始安装
-
-在您完成安装器的初始化后, 您只需要调用 LiteLoader 安装器的安装方法来完成安装.
-
-在异步上下文中, 使用 **InstallTaskAsync** 来完成安装：
-
-```c#
-
-await liteLoaderInstaller.InstallTaskAsync();
-
-```
-
-在同步上下文中, 使用 **Install** 来完成安装：
-
-```c#
-
-liteLoaderInstaller.Install();
-
-```
-
-## 报告安装进度
-
-在某些情况下, LiteLoader 安装器可能会需要数分钟的时间来完成安装.
-因此, 您可能需要实时向用户汇报安装器目前的进度.
-为此, LiteLoader 安装器提供了 **StageChangedEventDelegate** 事件来帮助您实现任务汇报.
-您只需要简单地在 **开始安装之前** 注册下面的事件：
-
-```c#
-
-liteLoaderInstaller.StageChangedEventDelegate += (_, args) => {
-    ReportProgress(args.Progress, args.CurrentStage);
-};
-
-```
-
-其中,  **args.Progress** 指示了安装器当前的百分比进度. **args.CurrentStage** 则是安装器当前进度的文字描述.
-
----
-
----
 url: /zhCN/projbobcat/installers/liteloader.md
 ---
 # LiteLoader 安装器
@@ -4672,54 +3985,6 @@ In the above code block, please replace these parameters according to your actua
 | \[GAME\_ROOT\_PATH] | The game root directory, usually the path to the **.minecraft** folder |
 | \[SEARCHED\_VERSION\_INFO] | VersionInfo of the version to check (obtained via game locator) |
 | \[CHECK\_LOCAL\_FILES] | Check local files (if false, skip all checks) |
-
----
-
----
-url: >-
-  /ruRU/projbobcat/resourceCompleter/resourceInfoResolver/gameLoggingInfoResolver.md
----
-# log4j 日志格式化组件解析器
-
-\[\[toc]]
-
-log4j 日志格式化组件解析器提供了对游戏资产文件的解析和验证功能, 这些文件存放在
-`.minecraft/logging` 目录下
-
-使用该资源解析器可以使 MineCraft 输出经过 log4j 格式化后的日志内容, 类似于如下的内容：
-
-```xml
-
-<log4j:Event logger="ekb" timestamp="1676012129" level="INFO" thread="Render thread">
-    <log4j:Message>
-        <![CDATA[Created: 512x512x4 minecraft:textures/atlas/shulker_boxes.png-atlas]]>
-    </log4j:Message>
-</log4j:Event>
-
-```
-
-## 初始化解析器
-
-你可以通过下面的代码来初始化 log4j 日志格式化组件解析器：
-
-```c#
-
-var resolver = new GameLoggingInfoResolver
-{
-    BasePath = "[GAME_ROOT_PATH]",
-    VersionInfo = [SEARCHED_VERSION_INFO],
-    CheckLocalFiles = [CHECK_LOCAL_FILES]
-};
-
-```
-
-在上述代码块中, 请将这些参数按照您的实际情况替换：
-
-|           项目            |               说明                |
-|:-----------------------:|:-------------------------------:|
-|    \[GAME\_ROOT\_PATH]     |   游戏根目录, 通常为 .minecraft 文件夹的路径   |
-| \[SEARCHED\_VERSION\_INFO] | 要检查的版本的 VersionInfo （通过游戏定位器获得） |
-|   \[CHECK\_LOCAL\_FILES]   |    检查本地文件（如果为 false, 则跳过所有检查）    |
 
 ---
 
@@ -5702,160 +4967,6 @@ Among them, **args.Progress** indicates the current percentage progress of the i
 ---
 
 ---
-url: /ruRU/projbobcat/installers/optifine.md
----
-# Optifine 安装器
-
-\[\[toc]]
-
-::: tip
-
-请注意, ProjBobcat 仅实现了 Optifine 自动化安装流程, 您仍然需要自己实现 Optifine 安装包的搜索、下载、保存流程.
-
-:::
-
-## 实用资源
-
-* [BMCLAPI 开发文档](https://bmclapidoc.bangbang93.com/)
-
-## 获取 Optifine Download Version Model
-
-由于 ProjBobcat 的 LiteLoader 安装器要求您在初始化安装器时提供来自 LiteLoader 的下载信息.
-因此, 我们将在这里简要描述如何根据指定的 MineCraft 版本来获取该信息.
-
-::: info
-
-在该示例中, 我们将使用 MineCraft 1.19.2 来向您展示如何获取.
-
-:::
-
-::: warning
-
-由于 Optifine 官方没有提供公开的 API 文档. 因此, 在本流程中, 我们需要使用第三方的镜像源来完成数据的获取.
-在这里, 我们使用 [BMCLAPI](https://bmclapidoc.bangbang93.com/) 来获取相关的版本信息.
-
-:::
-
-首先, 您需要向 [https://bmclapi2.bangbang93.com/optifine/\[MC\_VERSION\]](https://bmclapi2.bangbang93.com/optifine/1.19.2) 发送一个 **HTTP GET** 请求.
-将 `[MC_VERSION]` 替换为您想要安装的 MineCraft 版本. 在这里, 我们将使用 1.19.2.
-
-您将看到类似下面的返回内容：
-
-```json
-
-[
-  {
-    "_id": "6307b8a38a3998ab475d139d",
-    "mcversion": "1.19.2",
-    "patch": "H9",
-    "type": "HD_U",
-    "__v": 0,
-    "filename": "OptiFine_1.19.2_HD_U_H9.jar",
-    "forge": "Forge 43.1.1"
-  },
-  {...},
-  {...}
-]
-
-```
-
-BMCLAPI 将返回一个 JSON 数组, 数组中的每一个元素即是我们需要的 Download Version Model.
-
-#### 将 JSON 返回转换为 ProjBobcat 类型
-
-如果您在您的项目中使用 [JSON.NET](https://www.newtonsoft.com/json)（Newtonsoft.JSON）.
-您可以使用类似下面的代码来将您获取到的服务器响应转换为对应的 ProjBobcat 类型：
-
-```c#
-
-// 从 BMCLAPI 请求数据（示例, 非实际代码）
-...
-var responseJson = await res.Content.ReadAsStringAsync();
-
-// 将 JSON 响应转换为 ProjBobcat 类型 // [!code focus]
-var versions = JsonConvert.DeserializeObject<List<OptifineDownloadVersionModel>>(responseJson); // [!code focus]
-
-// 获取用户想要安装的版本（示例, 非实际代码）
-var userSelect = vm.SelectedIndex;
-
-// 获取单个 Download Version Model // [!code focus]
-var selectedVersion = versions[userSelect]; // [!code focus]
-
-```
-
-此处, **selectedVersion** 即是 Optifine 安装器所需要的 `OptifineDownloadVersionModel`.
-
-## 初始化安装器
-
-初始化 Optifine 安装器的方式非常简单.
-您首先需要准备好的 Optifine 安装包 .jar 文件. 以及一个可用的 Java 运行时.
-您需要使用到在先前步骤中取得的 `selectedVersion` 来初始化安装器：
-
-```c#
-
-var optifineInstaller = new OptifineInstaller
-{
-    JavaExecutablePath = "[PATH_TO_YOUR_JAVA_RUNTIME]",
-    OptifineDownloadVersion = selectedVersion,
-    OptifineJarPath = "[PATH_TO_YOUR_OPTIFINE_JAR]",
-    RootPath = "[GAME_ROOT_PATH]",
-    CustomId = "[CUSTOM_INSTALL_GAME_ID]",
-    InheritsFrom = "[MC_VERSION_OR_GAME_ID]"
-};
-
-```
-
-在上述代码块中, 请将这些参数按照您的实际情况替换：
-
-|                  项目                   |                      说明                       |
-|:-------------------------------------:|:---------------------------------------------:|
-|           \[GAME\_ROOT\_PATH]            |          游戏根目录, 通常为 .minecraft 文件夹的路径          |
-|       \[CUSTOM\_INSTALL\_GAME\_ID]        |              可选项, 自定义即将要安装的游戏的名称               |
-|        \[MC\_VERSION\_OR\_GAME\_ID]        | Forge 继承的 MineCraft 原版游戏版本, 通常为游戏版本. 例如：1.19.2  |
-|        \[VERSION\_LOCATOR\_INST]         |  游戏版本定位器实例, 即初始化游戏核心时的 **VersionLocator** 属性   |
-|      \[PATH\_TO\_YOUR\_OPTIFINE\_JAR]      |               Optifine 安装包所在的路径               |
-|      \[PATH\_TO\_YOUR\_JAVA\_RUNTIME]      |           Java （javaw.exe） 运行时所在的路径           |
-
-## 开始安装
-
-在您完成安装器的初始化后, 您只需要调用 Optifine 安装器的安装方法来完成安装.
-
-在异步上下文中, 使用 **InstallTaskAsync** 来完成安装：
-
-```c#
-
-await optifineInstaller.InstallTaskAsync();
-
-```
-
-在同步上下文中, 使用 **Install** 来完成安装：
-
-```c#
-
-optifineInstaller.Install();
-
-```
-
-## 报告安装进度
-
-在某些情况下, Optifine 安装器可能会需要数分钟的时间来完成安装.
-因此, 您可能需要实时向用户汇报安装器目前的进度.
-为此, Optifine 安装器提供了 **StageChangedEventDelegate** 事件来帮助您实现任务汇报.
-您只需要简单地在 **开始安装之前** 注册下面的事件：
-
-```c#
-
-optifineInstaller.StageChangedEventDelegate += (_, args) => {
-    ReportProgress(args.Progress, args.CurrentStage);
-};
-
-```
-
-其中,  **args.Progress** 指示了安装器当前的百分比进度. **args.CurrentStage** 则是安装器当前进度的文字描述.
-
----
-
----
 url: /zhCN/projbobcat/installers/optifine.md
 ---
 # Optifine 安装器
@@ -6242,23 +5353,6 @@ ProjBobcat is a highly customizable, high-performance, full-featured Minecraft l
 ---
 
 ---
-url: /ruRU/projbobcat.md
----
-# ProjBobcat 开发文档
-
-![Hx18lYLKR43WAb2](https://user-images.githubusercontent.com/25716486/172503112-95515b07-52ee-4d1e-868e-b87137c6034e.png)
-
-ProjBobcat 是一个由日冕开发组开发的高度自定义、高性能、功能完善的 Minecraft 启动器核心. 在这里您可以查阅到各大组件的使用教程.
-
-![Alt](https://repobeats.axiom.co/api/embed/d8d56d4c2023d90ea067d5b3ca83ed5da4979289.svg "Repobeats analytics image")
-
-## 项目地址
-
-[GitHub - ProjBobcat](https://github.com/Corona-Studio/ProjBobcat)
-
----
-
----
 url: /zhCN/projbobcat.md
 ---
 # ProjBobcat 开发文档
@@ -6293,24 +5387,101 @@ ProjBobcat 是一個由日冕開發組開發的高度自定義、高效能、功
 ---
 
 ---
-url: /zhCN/CMFS/servers/project-lappland.md
+url: /zhCN/CMFS/servers/mood/lappland.md
 ---
 # Project Lappland
 
+:::warning  WIP
+我们期待有优秀的编剧和RPG技术人员与我们一起共同实现这个世界的构筑。
+:::
+
 Project LappLand（其他地方用“ProjLapp”代称），是一个借助mod和无数脚本和魔改维持的奇特的地外冒险。我们引入一系列轻RPG元素和剧情，引导玩家在地球的遥远殖民地上自由征服。
 
-我们期待有优秀的编剧和RPG技术人员与我们一起共同实现这个世界的构筑。
+\[\[toc]]
+
+## 玩法
+
+ProjLapp的剧情主要侧重于营造氛围和环境，主要玩法是特定的模组生存。
+
+### 生存
+
+全天候的玩法。围绕着故事进行经营、建立自己的聚落定居点、感受和邻居之间的“地缘事务”——就像19~20世纪的艾美莉卡西部一样，这里距离“总部”很远，这里是无主之地。
+
+### 故事
+
+你是怎么来到这里的？你又是为了什么来到这里？想必你有自己的答案——“总部”选定你参与到这样的远星拓荒之中，对你来说究竟是扬名立万的机会，还是将你推入了无底的深渊？
+
+### 活动
+
+限时游玩的故事或经营玩法。
+
+## 规则
+
+### 禁止
+
+* 原版生电
+* 卡服以及其他创造大量实体的行为
+* 不宣而战 - 偷袭行为和其他不正当破坏行为将受到惩罚
+* 破坏任务地点
+* 利用bug的其他恶性的行为
+* 围堵任务地点或副本入口
+* 其他违反公序良俗的行为
+
+### 明确允许
+
+* 向任何非保护期内的聚落宣战（必须先通过系统功能发起）
+* 约架PVP（必须通过系统功能发起，且参与双方都将临时启用死亡不掉落）
 
 ---
 
 ---
-url: /zhCN/CMFS/servers/pure.md
+url: /zhCN/CMFS/help/guide-pure.md
 ---
-# Project Pure
+# Pure服务器帮助
 
-这是一个包含一切我们能想象到的原版玩法的群组服务器，接入了包含：生存、小游戏、(非公开)创造 等服务器，以后视情况也将开放：空岛生存、原版创造、原版RPG 等新的子服玩法！此外，我们等待有志向的伙伴来参与共建新的小游戏玩法！（见：）
+上次更新：2026年1月27日
 
-通过CSKB的目录来展开查看接入Pure群组的子服务器。
+\[\[toc]]
+
+## 常见问题
+
+### 我应该使用什么账户加入服务器？
+
+目前，CMFS-Pure和CMFS-Radost仅支持微软官方账户认证。这意味着玩家必须购买并使用有效的正版账户。
+
+### 我应该选择哪个地址来加入服务器？
+
+一般情况下，直接选择`pure.craftmine.fun`即可。如果提示无法连接到服务器，可以尝试使用国际解析的`pure.cmfs.kami.su` 或 `pure.cmfs.vot.moe` （国际解析并非国际优化线路！）若以上方法均不能起作用，尝试：
+
+* 使用LauncherX启动器
+* 检查网络代理和防火墙设置
+* 检查DNS设置
+
+### 我应该使用什么客户端进入服务器？
+
+要想加入群组服的登录服务器，至少需要Minecraft Java版原版或兼容的模组客户端，游戏版本至少为`1.20.1`。请注意，根据子服自有的规则，部分版本可能无法加入某些子服务器，一般情况下可以在【空间导航】菜单的悬浮提示上可见；有些客户端模组在部分子服中会破坏游戏体验，甚至可能被认定为作弊，使用兼容的模组客户端前请查看子服服规确认。
+
+### 我没有名为【空间导航】的指南针
+
+按下键盘上的斜杠`/`并输入`menu`（组合起来就是命令`/menu`）然后按下`enter`执行，同样可以打开空间导航。也可以找管理员申请补办。
+
+### 如何前往子服务器？
+
+通过使用【空间导航】菜单，玩家可以在菜单中央一行的按钮中选择目标服务器。点击后原地等待服务器传送即可。*在部分服务器中存在命令`/logoff`可以用于回到登录服务器，以重新选择目标服务器*。
+
+### 关于主城
+
+主城是由 @康桥 主导建筑的一片优美的中式园林。可能存在方法从园内跑到外面，但是仍然什么都做不了。
+
+### 群聊…
+
+欢迎加入总群：`419902868` 或Pure群：`805935004`。这些群聊遵从日冕工作室的[公开交流群管理规定和条款](/zhCN/guide/standard/code-of-open-groups)
+
+## 群组服规则（总则）
+
+* 在任何组成服务器中作弊都是禁止的。所有子服务器都不接受对作弊、外挂的辩解。
+* 利用服务器特性干扰服务器正常运行的行为是禁止的。登录服有权将任何人列入禁止进入的黑名单。
+* 在子服违反子服规则，也可能根据恶劣程度受到全群组的处罚。
 
 ---
 
@@ -6484,179 +5655,6 @@ quiltInstaller.StageChangedEventDelegate += (_, args) => {
 ```
 
 Among them, **args.Progress** indicates the current percentage progress of the installer. **args.CurrentStage** is a text description of the current progress of the installer.
-
----
-
----
-url: /ruRU/projbobcat/installers/quilt.md
----
-# Quilt 安装器
-
-\[\[toc]]
-
-::: tip
-
-请注意, ProjBobcat 仅实现了 Quilt 自动化安装流程, 您仍然需要自己实现 Quilt 安装包的搜索、下载、保存流程.
-
-:::
-
-::: warning
-
-Quilt 安装器目前处于试验阶段, 相关的 API 以及安装流程可能会出现较大幅度的变更.
-
-:::
-
-## 实用资源
-
-* [Quilt 官方网站](https://quiltmc.org/en/)
-* [Quilt 安装指南](https://quiltmc.org/en/install/)
-* [Quilt Meta API](https://meta.quiltmc.org/)
-
-## 兼容性检查
-
-在开始安装 Quilt 之前, 您需要通过 Quilt Meta API 来查询您将要修改的 MineCraft 版本是否受支持.
-
-首先, 您需要向 <https://meta.quiltmc.org/v3/versions/game> 发送一个 **HTTP GET** 请求.
-
-您将看到类似下面的返回内容：
-
-```json
-
-[
-  {
-    "version": "1.19.3",
-    "stable": true
-  },
-  {
-    "version": "1.19.3-rc3",
-    "stable": false
-  },
-  {...},
-  {...}
-]
-
-```
-
-在这里, 您需要检查您即将要安装的游戏版本是否出现在 Quilt 官方的支持列表当中.
-您需要将游戏版本与 JSON 对象中的 `version` 字段作比较.
-\*\*如果您的游戏没有出现在支持列表当中, 安装将无法继续. \*\*
-
-## 获取 Quilt Loader Model
-
-由于 ProjBobcat 的 Quilt 安装器要求您在初始化安装器时提供来自 Quilt 的下载信息.
-因此, 我们将在这里简要描述如何根据指定的 MineCraft 版本来获取该信息.
-
-::: info
-
-在该示例中, 我们将使用 MineCraft 1.19.2 来向您展示如何获取.
-
-:::
-
-首先, 您需要向 <https://meta.quiltmc.org/v3/versions/loader> 发送一个 **HTTP GET** 请求.
-
-您将看到类似下面的返回内容：
-
-```json
-
-[
-  {
-    "separator": ".",
-    "build": 25,
-    "maven": "org.quiltmc:quilt-loader:0.18.1-beta.25",
-    "version": "0.18.1-beta.25"
-  },
-  {...},
-  {...}
-]
-
-```
-
-Quilt Meta API 将返回一个 JSON 数组, 数组中的每一个元素即是我们需要的 Loader Artifact.
-
-#### 将 JSON 返回转换为 ProjBobcat 类型
-
-如果您在您的项目中使用 [JSON.NET](https://www.newtonsoft.com/json)（Newtonsoft.JSON）.
-您可以使用类似下面的代码来将您获取到的服务器响应转换为对应的 ProjBobcat 类型：
-
-```c#
-
-// 从 Quilt Meta API 请求数据（示例, 非实际代码）
-...
-var responseJson = await res.Content.ReadAsStringAsync();
-
-// 将 JSON 响应转换为 ProjBobcat 类型 // [!code focus]
-var artifacts = JsonConvert.DeserializeObject<List<QuiltLoaderModel>>(responseJson); // [!code focus]
-
-// 获取用户想要安装的版本（示例, 非实际代码）
-var userSelect = vm.SelectedArtifactIndex;
-
-// 获取单个 Loader Artifact // [!code focus]
-var selectedArtifact = artifacts[userSelect]; // [!code focus]
-
-```
-
-此处, **selectedArtifact** 即是 Fabric 安装器所需要的 `QuiltLoaderModel`.
-
-## 初始化安装器
-
-初始化 Quilt 安装器的方式非常简单. 您需要使用到在先前步骤中取得的 `selectedArtifact` 来初始化安装器：
-
-```c#
-
-var quiltInstaller = new QuiltInstaller
-{
-    InheritsFrom = "[MC_VERSION_OR_GAME_ID]",
-    RootPath = "[GAME_ROOT_PATH]",
-    CustomId = "[CUSTOM_INSTALL_GAME_ID]",
-    LoaderArtifact = selectedArtifact
-};
-
-```
-
-在上述代码块中, 请将这些参数按照您的实际情况替换：
-
-|                 项目                  |                      说明                       |
-|:-----------------------------------:|:---------------------------------------------:|
-|          \[GAME\_ROOT\_PATH]           |          游戏根目录, 通常为 .minecraft 文件夹的路径          |
-|      \[CUSTOM\_INSTALL\_GAME\_ID]       |              可选项, 自定义即将要安装的游戏的名称               |
-|       \[MC\_VERSION\_OR\_GAME\_ID]       | Forge 继承的 MineCraft 原版游戏版本, 通常为游戏版本. 例如：1.19.2  |
-
-## 开始安装
-
-在您完成安装器的初始化后, 您只需要调用 Fabric 安装器的安装方法来完成安装.
-
-在异步上下文中, 使用 **InstallTaskAsync** 来完成安装：
-
-```c#
-
-await quiltInstaller.InstallTaskAsync();
-
-```
-
-在同步上下文中, 使用 **Install** 来完成安装：
-
-```c#
-
-quiltInstaller.Install();
-
-```
-
-## 报告安装进度
-
-在某些情况下, Quilt 安装器可能会需要数分钟的时间来完成安装.
-因此, 您可能需要实时向用户汇报安装器目前的进度.
-为此, Quilt 安装器提供了 **StageChangedEventDelegate** 事件来帮助您实现任务汇报.
-您只需要简单地在 **开始安装之前** 注册下面的事件：
-
-```c#
-
-quiltInstaller.StageChangedEventDelegate += (_, args) => {
-    ReportProgress(args.Progress, args.CurrentStage);
-};
-
-```
-
-其中,  **args.Progress** 指示了安装器当前的百分比进度. **args.CurrentStage** 则是安装器当前进度的文字描述.
 
 ---
 
@@ -6989,6 +5987,44 @@ quiltInstaller.StageChangedEventDelegate += (_, args) => {
 ```
 
 其中,  **args.Progress** 指示了安裝器當前的百分比進度. **args.CurrentStage** 則是安裝器當前進度的文字描述.
+
+---
+
+---
+url: /zhCN/CMFS/help/guide-radost.md
+---
+# Radost 小游戏群组
+
+## 简介
+
+Radost一词来自俄语Радость，意为“欢愉、快乐”。我们旨在提供一系列可以在坐在电脑前办公的闲暇之余就可以快速放松的小游戏体验，也不乏会有一些创意孵化的新鲜小游戏。
+
+## 加入
+
+直接加入Pure群组，在【空间导航】选择【Radost】即可进入小游戏菜单以选择小游戏。
+
+:::info 连接信息
+
+* 游戏版本：1.20.1+ 原版，具体见菜单中标注的子服游戏版本
+* 地址：`pure.craftmine.fun` | `pure.cmfs.kami.su`（海外解析）
+* 建议使用纯净原版客户端游玩
+
+:::
+
+## 共建
+
+加入【小游戏共建】？我们将给你提供一个契机——如果你有一定的技术，并且有想要实现的小游戏玩法，可以加入CMFS的【小游戏共建】计划。在我们提供的免费服务器面板上部署你的小游戏，然后接入CMFS-Radost小游戏群组，然后与我们一起发力宣传，看看你的小游戏反响如何！
+
+通过共建审核后，你将获得子服的完整OP权限，你可以全权管理属于你的免费子服。 但是与此同时，你必须遵守这些规则：
+
+* 你不能允许在子服里出现任何源自Corona Studio以外的广告
+* 你不能因为这个子服盈利。也就是说，你必须保证子服是公益运营的
+* 你不能违反最基本的CMFS规则和国家法律法规（无论是Corona Studio所在国还是你所在国的）
+* 你不能说开就开、说停就停；你的子服必须有一定的完成度，并且停服必须提前一个月预告；必须坚持维护运营
+* 申请加入共建计划的实体可以是个人也可以是运营团队
+* 你不能利用子服面板搭建无关内容
+* 你不能直接在子服内拉起、宣传未经我们许可的群聊
+* 注意！我们保留直接撤下子服的权利！
 
 ---
 
@@ -7553,6 +6589,13 @@ url: /ruRU/team.md
 ---
 
 ---
+url: /zhCN/CMFS/help/guide-pure/survival-gameplay.md
+---
+
+
+---
+
+---
 url: /zhCN/guide/standard/cmfs-stable-test-general-standard.md
 ---
 暂未编写
@@ -8061,6 +7104,2022 @@ var authResult = offlineAuthenticator.Auth();
 ---
 
 ---
+url: /ruRU/projbobcat.md
+---
+# Документация разработчика ProjBobcat
+
+![Hx18lYLKR43WAb2](https://user-images.githubusercontent.com/25716486/172503112-95515b07-52ee-4d1e-868e-b87137c6034e.png)
+
+ProjBobcat — это легко настраиваемое, высокопроизводительное и полнофункциональное ядро запуска Minecraft, разработанное Corona Development Group. Здесь вы можете найти руководства по использованию различных компонентов.
+
+![Alt](https://repobeats.axiom.co/api/embed/d8d56d4c2023d90ea067d5b3ca83ed5da4979289.svg "Repobeats analytics image")
+
+## Ссылка на проект
+
+[GitHub - ProjBobcat](https://github.com/Corona-Studio/ProjBobcat)
+
+---
+
+---
+url: /ruRU/projbobcat/additionalParsers.md
+---
+# Дополнительные парсеры
+
+Чтобы ProjBobcat вел себя так же, как официальный лаунчер Mojang, мы реализовали для него несколько дополнительных парсеров, которые помогают нам синхронизировать данные и профили с официальным лаунчером.
+
+В следующей таблице перечислены парсеры, которые были реализованы в настоящее время:
+
+|              Название              |          Описание           |
+|:----------------------------:|:---------------------:|
+| DefaultLauncherAccountParser | Используется для записи информации о проверке в файл конфигурации официального лаунчера  |
+| DefaultLauncherProfileParser | Используется для записи найденных локальных игр в файл конфигурации лаунчера |
+
+---
+
+---
+url: /ruRU/projbobcat/resourceCompleter.md
+---
+# Комплетер ресурсов
+
+В ProjBobcat мы предоставляем разработчикам комплитер для завершения основных файлов ресурсов Minecraft.
+Эти ресурсы включают: игровое аудио, материалы, текстуры, языковые файлы, файлы библиотек, необходимые для запуска, и т. д.
+
+---
+
+---
+url: /ruRU/projbobcat/authenticators.md
+---
+# Модели аутентификации
+
+В ProjBobcat мы реализовали для разработчиков все сценарии аутентификации, с которыми вы можете столкнуться в процессе разработки Minecraft.
+
+## Список поддержки
+
+|          Название систем           |    Применимый сценарий     |
+|:-----------------------:|:-----------:|
+|  OfflineAuthenticator   |   Система оффлайн-аутентификации    |
+| YggdrasilAuthenticator  | Подходит для старых систем входа в систему |
+| MicrosoftAuthenticator  |  Новая система аутентификации Microsoft  |
+
+---
+
+---
+url: /ruRU/projbobcat/createNewAzureApp.md
+---
+# Настройка приложения Azure
+
+\[\[toc]]
+
+## Начало настройки
+
+Прежде чем начать, вам понадобится учетная запись Microsoft. Регистрация приложения в Azure Active Directory бесплатна.
+
+Войдите на [портал Azure](https://portal.azure.com/#home) с помощью своей учетной записи Microsoft.
+После входа вы должны увидеть страницу, подобную этой:
+
+![Портал Azure](/img/projbobcat/installationAndConfig/configMSAuth/step_1.png)
+
+Нажмите **Azure Active Directory** в разделе **Службы Azure**.
+
+![Azure AD](/img/projbobcat/installationAndConfig/configMSAuth/azure_ad.png)
+
+Вы увидите страницу, похожую на следующую:
+
+![Портал Azure](/img/projbobcat/installationAndConfig/configMSAuth/step_2.png)
+
+Затем нажмите **Регистрация приложений** в левой панели функций:
+
+![Портал Azure](/img/projbobcat/installationAndConfig/configMSAuth/reg_app.png)
+
+Нажмите **Новая регистрация** на верхней панели инструментов, введите имя приложения. И выберите **Только личные учетные записи Microsoft** в разделе **Поддерживаемые типы учетных записей**.
+Поскольку мы не используем аутентификацию на основе обратного вызова URI, вам не нужно заполнять **URI перенаправления** в нижней части формы.
+
+::: warning
+Пожалуйста, внимательно проверьте информацию в форме, иначе на последующих шагах могут возникнуть непредвиденные проблемы.
+:::
+
+![Портал Azure](/img/projbobcat/installationAndConfig/configMSAuth/step_3.png)
+
+Нажмите "Создать" и дождитесь, пока Azure AD завершит создание приложения. После завершения создания веб-страница перенаправит вас на страницу сведений о приложении:
+
+![Портал Azure](/img/projbobcat/installationAndConfig/configMSAuth/step_4.png)
+
+Затем нажмите **Аутентификация** на левой боковой панели:
+
+![Портал Azure](/img/projbobcat/installationAndConfig/configMSAuth/identity_verification.png)
+
+Затем найдите раздел **Дополнительные параметры** справа и убедитесь, что **Поддержка расширенного SDK** и **Разрешить общедоступные клиентские потоки** в этом разделе включены.
+Если они не включены, включите их вручную.
+
+![Портал Azure](/img/projbobcat/installationAndConfig/configMSAuth/id_advanced_settings.png)
+
+Затем нажмите кнопку "Сохранить" ниже и дождитесь завершения сохранения.
+
+## Просмотр Client ID
+
+Поздравляем! Вы завершили регистрацию приложения Azure, теперь вам просто нужно перейти на страницу **Обзор**, чтобы просмотреть Client ID приложения.
+Нажмите кнопку **Обзор** на левой боковой панели, чтобы просмотреть основную информацию о приложении:
+
+![Портал Azure](/img/projbobcat/installationAndConfig/configMSAuth/about.png)
+
+Справа вы увидите подробную информацию о приложении, найдите **ID приложения (клиента)** в **Сводке**.
+Этот ID будет Client ID, который вам нужно будет использовать на этапе [настройки аутентификатора Microsoft](/ruRU/projbobcat/installationAndConfig).
+
+![Портал Azure](/img/projbobcat/installationAndConfig/configMSAuth/about_block.png)
+
+---
+
+---
+url: /ruRU/projbobcat/additionalParsers/accountProfileParser.md
+---
+# Парсер игровых аккаунтов
+
+Парсер игровых профилей отвечает за запись учетных записей пользователей в файл конфигурации официального лаунчера.
+
+## Инициализация парсера
+
+Способ инициализации парсера очень прост:
+
+```c#
+var launcherAccountParser
+    = new DefaultLauncherAccountParser(rootPath, clientToken)
+```
+
+Где **rootPath** — это корневой каталог, в котором находится ядро (т. е. каталог, в котором находится папка .minecraft).
+**clientToken** — это случайно сгенерированный GUID.
+
+---
+
+---
+url: /ruRU/projbobcat/additionalParsers/gameProfileParser.md
+---
+# Парсер игровых профилей
+
+Парсер игровых профилей отвечает за запись найденных локальных игр в файл конфигурации официального лаунчера.
+
+## Инициализация парсера
+
+Способ инициализации парсера очень прост:
+
+```c#
+var launcherProfileParser
+    = new DefaultLauncherProfileParser(rootPath, clientToken)
+```
+
+Где **rootPath** — это корневой каталог, в котором находится ядро (т. е. каталог, в котором находится папка .minecraft).
+**clientToken** — это случайно сгенерированный GUID.
+
+---
+
+---
+url: /ruRU/projbobcat/beforeWeStart.md
+---
+# Перед тем как начать
+
+Прежде чем вы начнете использовать ProjBobcat, вам необходимо проверить и настроить свойства вашего проекта, чтобы он соответствовал требованиям ProjBobcat.
+
+\[\[toc]]
+
+## Требования к среде выполнения
+
+Вам необходимо убедиться, что ваш проект работает как минимум на .NET 6.0 или более поздней версии.
+
+Поддерживаемые в настоящее время версии .NET:
+
+* .NET 8.0
+
+::: warning
+
+В предыдущих обновлениях мы удалили поддержку сред выполнения **.NET 5.0**, **.NET 6.0** и **.NET 7.0**.
+
+:::
+
+## Свойства проекта
+
+Из-за системных механизмов Windows вам необходимо отключить опцию сборки **"Предпочитать 32-разрядную версию"** в свойствах вашего проекта. В противном случае при использовании некоторых компонентов ProjBobcat могут возникнуть непредвиденные результаты.
+
+Вам нужно перейти на страницу свойств проекта в Visual Studio, найти флажок **"Предпочитать 32-разрядную версию"** и снять его.
+
+## Поддержка 32-разрядных систем
+
+::: warning
+
+С самого начала проекта ProjBobcat было решено отказаться от поддержки 32-разрядных систем, потому что они действительно очень, очень старые (
+
+:::
+
+---
+
+---
+url: /ruRU/projbobcat/resourceCompleter/resourceInfoResolver/assetInfoResolver.md
+---
+# Распознаватель ассетов
+
+\[\[toc]]
+
+Распознаватель ассетов предоставляет функции для разбора и проверки файлов ассетов игры, которые обычно хранятся в каталоге `.minecraft/assets`.
+
+## Получение списка версий манифеста версий
+
+Сначала вам нужно отправить запрос **HTTP GET** на <https://launchermeta.mojang.com/mc/game/version_manifest.json>.
+
+Вы увидите ответ, подобный следующему:
+
+```json
+{
+  "latest": {
+    "release": "1.19.3",
+    "snapshot": "23w06a"
+  },
+  "versions": [
+    {
+      "id": "23w06a",
+      "type": "snapshot",
+      "url": "https://piston-meta.mojang.com/v1/packages/92ed97b686fe8904d8ec00fd486c435582fd0155/23w06a.json",
+      "time": "2023-02-08T15:11:06+00:00",
+      "releaseTime": "2023-02-08T15:00:04+00:00"
+    },
+    ...
+  ]
+}
+```
+
+Сервер Mojang вернет объект JSON, и поле **versions** — это массив версий, который нам нужен.
+
+### Преобразование ответа JSON в тип ProjBobcat
+
+Если вы используете [JSON.NET](https://www.newtonsoft.com/json) (Newtonsoft.JSON) в своем проекте.
+Вы можете использовать код, подобный приведенному ниже, для преобразования ответа сервера, который вы получили, в соответствующий тип ProjBobcat:
+
+```c#
+// Запрос данных из Mojang API (пример, не реальный код)
+...
+var responseJson = await res.Content.ReadAsStringAsync();
+
+// Преобразование ответа JSON в тип ProjBobcat // [!code focus]
+var manifest = JsonConvert.DeserializeObject<VersionManifest>(responseJson); // [!code focus]
+
+// Получение списка версий // [!code focus]
+var versions = manifest.Versions; // [!code focus]
+```
+
+Здесь **versions** — это массив `Versions`, необходимый распознавателю ассетов.
+
+## Инициализация распознавателя
+
+Вы можете инициализировать распознаватель ассетов с помощью следующего кода:
+
+```c#
+var resolver = new AssetInfoResolver
+{
+    AssetIndexUriRoot = "https://launchermeta.mojang.com/",
+    AssetUriRoot = "https://resources.download.minecraft.net/",
+    BasePath = "[GAME_ROOT_PATH]",
+    VersionInfo = [SEARCHED_VERSION_INFO],
+    CheckLocalFiles = [CHECK_LOCAL_FILES],
+    Versions = versions // Массив версий, полученный на предыдущем шаге
+};
+```
+
+В приведенном выше блоке кода замените эти параметры в соответствии с вашей реальной ситуацией:
+
+|           Элемент            |               Описание                |
+|:-----------------------:|:-------------------------------:|
+|    \[GAME\_ROOT\_PATH]     |   Корневой каталог игры, обычно путь к папке .minecraft   |
+| \[SEARCHED\_VERSION\_INFO] | VersionInfo версии для проверки (получается через локатор игр) |
+|   \[CHECK\_LOCAL\_FILES]   |    Проверка локальных файлов (если false, все проверки пропускаются)    |
+
+---
+
+---
+url: /ruRU/projbobcat/resourceCompleter/resourceInfoResolver/libraryInfoResolver.md
+---
+# Распознаватель библиотек
+
+\[\[toc]]
+
+Распознаватель библиотек предоставляет функции для разбора и проверки файлов ассетов игры, которые хранятся в каталоге `.minecraft/libraries`. Эти файлы являются файлами времени выполнения, необходимыми для запуска Minecraft.
+
+## Инициализация распознавателя
+
+Вы можете инициализировать распознаватель библиотек с помощью следующего кода:
+
+```c#
+var resolver = new LibraryInfoResolver
+{
+    BasePath = "[GAME_ROOT_PATH]",
+    ForgeUriRoot = "https://files.minecraftforge.net/maven/",
+    ForgeMavenUriRoot = "https://maven.minecraftforge.net/",
+    ForgeMavenOldUriRoot = "https://files.minecraftforge.net/maven/",
+    FabricMavenUriRoot = "https://maven.fabricmc.net/",
+    LibraryUriRoot = "https://libraries.minecraft.net/",
+    VersionInfo = [SEARCHED_VERSION_INFO],
+    CheckLocalFiles = [CHECK_LOCAL_FILES]
+};
+```
+
+В приведенном выше блоке кода замените эти параметры в соответствии с вашей реальной ситуацией:
+
+|           Элемент            |               Описание                |
+|:-----------------------:|:-------------------------------:|
+|    \[GAME\_ROOT\_PATH]     |   Корневой каталог игры, обычно путь к папке .minecraft   |
+| \[SEARCHED\_VERSION\_INFO] | VersionInfo версии для проверки (получается через локатор игр) |
+|   \[CHECK\_LOCAL\_FILES]   |    Проверка локальных файлов (если false, все проверки пропускаются)    |
+
+---
+
+---
+url: /ruRU/projbobcat/resourceCompleter/resourceInfoResolver/versionInfoResolver.md
+---
+# Распознаватель информации о версии
+
+\[\[toc]]
+
+Распознаватель информации о версии предоставляет функции для разбора и проверки файлов ассетов игры, которые хранятся в каталоге `.minecraft/versions/{GAME_VERSION}/{GAME_VERSION}.jar`. Эти файлы являются основными файлами, необходимыми для запуска Minecraft.
+
+## Инициализация распознавателя
+
+Вы можете инициализировать распознаватель с помощью следующего кода:
+
+```c#
+var resolver = new VersionInfoResolver
+{
+    BasePath = "[GAME_ROOT_PATH]",
+    VersionInfo = [SEARCHED_VERSION_INFO],
+    CheckLocalFiles = [CHECK_LOCAL_FILES]
+};
+```
+
+В приведенном выше блоке кода замените эти параметры в соответствии с вашей реальной ситуацией:
+
+|           Элемент            |               Описание                |
+|:-----------------------:|:-------------------------------:|
+|    \[GAME\_ROOT\_PATH]     |   Корневой каталог игры, обычно путь к папке .minecraft   |
+| \[SEARCHED\_VERSION\_INFO] | VersionInfo версии для проверки (получается через локатор игр) |
+|   \[CHECK\_LOCAL\_FILES]   |    Проверка локальных файлов (если false, все проверки пропускаются)    |
+
+---
+
+---
+url: /ruRU/projbobcat/resourceCompleter/resourceInfoResolver.md
+---
+# Распознаватель информации о ресурсах
+
+В ProjBobcat мы используем **распознаватель информации о ресурсах** (ResourceInfoResolver), чтобы помочь комплитеру ресурсов определить недостающие файлы Minecraft.
+
+В следующей таблице показаны распознаватели ресурсов, которые в настоящее время поддерживаются ProjBobcat:
+
+|            Имя класса            |                 Введение                  |
+|:------------------------:|:-----------------------------------:|
+|    AssetInfoResolver     |     Используется для разбора ассетов, необходимых для игры (аудио, языки, шрифты, текстуры и т. д.)      |
+| GameLoggingInfoResolver  | Используется для разбора компонента форматирования журнала log4j, предоставляемого официальным Minecraft |
+|   LibraryInfoResolver    |           Используется для разбора файлов библиотек, необходимых для запуска игры           |
+|   VersionInfoResolver    |       Используется для разбора файлов JAR, указанных в игровом JSON       |
+
+---
+
+---
+url: >-
+  /ruRU/projbobcat/resourceCompleter/resourceInfoResolver/gameLoggingInfoResolver.md
+---
+# Распознаватель компонентов форматирования журнала log4j
+
+\[\[toc]]
+
+Распознаватель компонентов форматирования журнала log4j предоставляет функции для разбора и проверки файлов ассетов игры, которые хранятся в каталоге `.minecraft/logging`.
+
+Использование этого распознавателя ресурсов позволяет Minecraft выводить содержимое журнала, отформатированное с помощью log4j, подобно следующему:
+
+```xml
+<log4j:Event logger="ekb" timestamp="1676012129" level="INFO" thread="Render thread">
+    <log4j:Message>
+        <![CDATA[Created: 512x512x4 minecraft:textures/atlas/shulker_boxes.png-atlas]]>
+    </log4j:Message>
+</log4j:Event>
+```
+
+## Инициализация распознавателя
+
+Вы можете инициализировать распознаватель компонентов форматирования журнала log4j с помощью следующего кода:
+
+```c#
+var resolver = new GameLoggingInfoResolver
+{
+    BasePath = "[GAME_ROOT_PATH]",
+    VersionInfo = [SEARCHED_VERSION_INFO],
+    CheckLocalFiles = [CHECK_LOCAL_FILES]
+};
+```
+
+В приведенном выше блоке кода замените эти параметры в соответствии с вашей реальной ситуацией:
+
+|           Элемент            |               Описание                |
+|:-----------------------:|:-------------------------------:|
+|    \[GAME\_ROOT\_PATH]     |   Корневой каталог игры, обычно путь к папке .minecraft   |
+| \[SEARCHED\_VERSION\_INFO] | VersionInfo версии для проверки (получается через локатор игр) |
+|   \[CHECK\_LOCAL\_FILES]   |    Проверка локальных файлов (если false, все проверки пропускаются)    |
+
+---
+
+---
+url: /ruRU/projbobcat/authenticators/microsoft.md
+---
+# Система аутентификации Microsoft
+
+\[\[toc]]
+
+Эта системы аутентификации реализует новый процесс аутентификации на основе Azure, который применим ко всем версиям Minecraft, которые в настоящее время обслуживаются.
+
+## Подготовка
+
+Поскольку новый процесс аутентификации использует метод аутентификации на основе Azure.
+Поэтому, прежде чем начать, убедитесь, что вы завершили [конфигурацию приложения Azure](/ruRU/projbobcat/createNewAzureApp).
+
+После завершения регистрации приложения Azure убедитесь, что вы завершили [инициализацию аутентификатора Microsoft](/ruRU/projbobcat/installationAndConfig.md#настройка-аутентификатора-входа-в-microsoft) в точке входа программы.
+
+### Настройка метода предоставления кэшированных учетных данных
+
+Из-за особенностей этой системи аутентификации разработчикам необходимо сохранять **токен обновления** и **время истечения срока действия**, возвращаемые при первой аутентификации, чтобы помочь аутентификатору завершить аутентификацию.
+При аутентификации аутентификатор сначала вызовет этот метод, чтобы проверить действительность локального кэша токенов. Если локальный токен все еще действителен, результат аутентификации будет возвращен напрямую.
+Если токен, кэшированный локально, истек, разработчику необходимо вручную запросить новый токен, а затем вернуть обновленный токен.
+
+Ниже мы приводим пример реализации этого метода:
+
+```c#
+public async Task<(bool, GraphAuthResultModel?)> CacheTokenProviderAsync()
+{
+    if (string.IsNullOrEmpty(XBLToken)) return (false,  default);
+    if (string.IsNullOrEmpty(XBLRefreshToken)) return (false,  default);
+
+    // Рассчитать время истечения срока действия // [!code focus]
+    var expireDate = LastRefreshedTime.AddSeconds(ExpiresIn); // [!code focus]
+
+    // Если локальный кэшированный токен все еще действителен, вернуть текущий токен напрямую // [!code focus]
+    // В противном случае используйте токен обновления для запроса нового токена // [!code focus]
+    if (expireDate > DateTime.Now)
+    {
+        var result = new GraphAuthResultModel // [!code focus]
+        { // [!code focus]
+            ExpiresIn = (int)(expireDate - DateTime.Now).TotalSeconds,  // [!code focus]
+            AccessToken = XBLToken,  // [!code focus]
+            RefreshToken = XBLRefreshToken // [!code focus]
+        }; // [!code focus]
+
+        return (true,  result); // [!code focus]
+    }
+    
+    // Запросить новый токен входа // [!code focus]
+    var refreshReqDic = new List<KeyValuePair<string,  string>> // [!code focus]
+    { // [!code focus]
+        new("client_id",  MicrosoftAuthenticator.ApiSettings.ClientId),  // [!code focus]
+        new("refresh_token",  XBLRefreshToken),  // [!code focus]
+        new("grant_type",  "refresh_token") // [!code focus]
+    }; // [!code focus]
+
+    using var refreshReq = new HttpRequestMessage(HttpMethod.Post,  MicrosoftAuthenticator.MSRefreshTokenRequestUrl) // [!code focus]
+    { // [!code focus]
+        Content = new FormUrlEncodedContent(refreshReqDic) // [!code focus]
+    }; // [!code focus]
+
+    using var refreshRes = await DefaultClient.SendAsync(refreshReq);
+    var refreshContent = await refreshRes.Content.ReadAsStringAsync();
+    var refreshModel = MicrosoftAuthenticator.ResolveMSGraphResult(refreshContent,
+    GraphAuthResultModelContext.Default.GraphAuthResultModel);
+
+    if (refreshModel is not GraphAuthResultModel model)
+    {
+        if (refreshModel is GraphResponseErrorModel error) // [!code focus]
+        { // [!code focus]
+            // Обработка неудачной операции обновления здесь // [!code focus]
+        } // [!code focus]
+
+        return (false,  default);
+    }
+
+    return (true,  model);
+}
+```
+
+### Настройка метода отображения кода аутентификации потока устройства при первом входе
+
+Поскольку мы используем аутентификацию потока устройства для аутентификации учетной записи Microsoft игрока.
+Поэтому нам нужен дополнительный метод для отображения пользователю одноразового ключа и адреса аутентификации, необходимых для аутентификации потока устройства.
+
+Ниже приведен пример этого метода:
+
+```c#
+private void DeviceTokenNotifier(DeviceIdResponseModel deviceIdResponseModel)
+{
+    // Отображение полученных данных обратного вызова на внешнем интерфейсе
+    DeviceCodeResponse = deviceIdResponseModel;
+}
+```
+
+**DeviceIdResponseModel** содержит всю информацию, необходимую пользователю для завершения аутентификации:
+
+|       Название        |           Действие            |
+|:---------------:|:-----------------------:|
+|    UserCode     |       Ключ, необходимый для аутентификации пользователя        |
+| VerificationUri | Адрес аутентификации, который пользователи должны посетить для выполнения последующих шагов аутентификации |
+|    ExpiresIn    |      Время истечения срока действия кода аутентификации (секунды)       |
+
+Ниже вы можете увидеть пример интерфейса отображения:
+
+![device\_token\_demo](/img/projbobcat/authenticators/device_token_auth_display_demo.png)
+
+В этом интерфейсе вам необходимо включить как минимум следующее содержимое:
+
+* Ключ, необходимый для входа
+* Конкретный адрес аутентификации
+* Краткая подсказка по работе, чтобы помочь пользователям завершить операцию аутентификации
+
+## Инициализация аутентификатора
+
+### Первая аутентификация
+
+:::warning
+
+Убедитесь, что вы подготовили **метод отображения кода аутентификации потока устройства при первом входе** перед выполнением следующего процесса, чтобы убедиться, что пользователи могут получить правильную информацию для первого входа!
+
+:::
+
+Инициализация аутентификатора:
+
+```c#
+var microsoftAuthenticator = new MicrosoftAuthenticator
+{
+    LauncherAccountParser = launcherAccountParser
+};
+```
+
+В приведенном выше блоке кода замените эти параметры в соответствии с вашей реальной ситуацией:
+
+|          Элемент           |                             Описание                              |
+|:---------------------:|:-----------------------------------------------------------:|
+| launcherAccountParser |                     Для инициализации парсера учетных записей лаунчера см. здесь                     |
+
+### Не первая аутентификация
+
+Не первая аутентификация — это использование кэша токенов, полученного при первой аутентификации, для вторичной аутентификации.
+В основном он проверяет, действительны ли локальные учетные данные через CacheTokenProviderAsync. Если токен, кэшированный локально, истек, он будет обновлен в этом методе.
+
+Инициализация аутентификатора:
+
+```c#
+var microsoftAuthenticator = new MicrosoftAuthenticator
+{
+    CacheTokenProvider = CacheTokenProviderAsync,
+    Email = "[EMAIL]",
+    LauncherAccountParser = launcherAccountParser
+};
+```
+
+В приведенном выше блоке кода замените эти параметры в соответствии с вашей реальной ситуацией:
+
+|          Элемент           |                             Описание                              |
+|:---------------------:|:-----------------------------------------------------------:|
+| launcherAccountParser |                     Для инициализации парсера учетных записей лаунчера см. здесь                     |
+|        \[EMAIL]        |                          Адрес электронной почты учетной записи аутентификации                          |
+
+:::tip
+
+Для инициализации **launcherAccountParser** (парсера игровых профилей) см. страницу [Парсер игровых профилей](/ruRU/projbobcat/additionalParsers/gameProfileParser).
+
+:::
+
+## Получение результата аутентификации (первая аутентификация)
+
+После завершения инициализации системи аутентификации вам нужно только вызвать метод аутентификации аутентификатора Microsoft для первоначальной аутентификации учетной записи.
+
+Ниже приведен пример кода аутентификации:
+
+```c#
+// Получить результат аутентификации // [!code focus]
+// DeviceTokenNotifier — это метод отображения информации, упомянутый ранее // [!code focus]
+var authResult = await msAuth.GetMSAuthResult(DeviceTokenNotifier); // [!code focus]
+
+if (authResult == null)
+{
+    // Обработка неудачной аутентификации // [!code focus]
+}
+
+// Разбор полей пользователя из токена Jwt // [!code focus]
+var claims = JwtTokenHelper.GetTokenInfo(authResult.IdToken); // [!code focus]
+var email = claims.TryGetValue("email", out var outEmail) ? outEmail : null; // [!code focus]
+
+if (string.IsNullOrEmpty(email))
+{
+    // Невозможно разобрать адрес электронной почты пользователя из учетных данных Jwt, рассматривается как сбой аутентификации // [!code focus]
+    // Это, скорее всего, вызвано сбоем конфигурации приложения Azure или Scope // [!code focus]
+}
+
+// Сохранение необходимой информации о пользователе на локальный диск для подготовки к следующей аутентификации // [!code focus]
+var msInfoModel = new MSAccountInfoModel
+{
+    XBLToken = authResult.AccessToken, // [!code focus]
+    XBLRefreshToken = authResult.RefreshToken, // [!code focus]
+    ExpiresIn = authResult.ExpiresIn, // [!code focus]
+    Email = email // [!code focus]
+};
+```
+
+## Получение результата аутентификации (не первая аутентификация)
+
+После завершения инициализации системи аутентификации вам нужно только вызвать метод аутентификации аутентификатора Microsoft для завершения аутентификации учетной записи.
+
+В асинхронном контексте используйте **AuthTaskAsync** для завершения аутентификации:
+
+```c#
+var authResult = await microsoftAuthenticator.AuthTaskAsync(false);
+```
+
+В синхронном контексте используйте **Auth** для завершения аутентификации:
+
+```c#
+var authResult = microsoftAuthenticator.Auth();
+```
+
+## Интерпретация результата аутентификации
+
+После завершения метода аутентификации оно вернет результат аутентификации, который является объектом родительского типа [AuthResultBase](https://github.com/Corona-Studio/ProjBobcat/blob/master/ProjBobcat/ProjBobcat/Class/Model/Auth/AuthResultBase.cs).
+Все результаты аутентификации содержат значение перечисления **AuthStatus**, которое напрямую указывает на успех или неудачу аутентификации.
+Ниже вы можете увидеть интерпретацию результата аутентификации:
+
+### Неудачный результат аутентификации
+
+Определив, является ли **Error** пустым, вы можете легко определить, является ли результат аутентификации, возвращенный системой аутентификации, действительным.
+Объект **Error** будет содержать следующие поля, чтобы сообщить вам некоторые подробности:
+
+|              Поле               |        Описание        |
+|:-----------------------------:|:----------------:|
+|    authResult.Error.Cause     |    Конкретная причина проблемы     |
+|    authResult.Error.Error     |       Название ошибки       |
+| authResult.Error.ErrorMessage | Подробная информация об ошибке, может содержать решение |
+
+### Успешный результат аутентификации
+
+Если поле **Error** в результате аутентификации пусто, это означает, что эта аутентификация действительна. Успешный результат аутентификации будет содержать следующую информацию:
+
+|               Поле               |                     Описание                      |
+|:------------------------------:|:-------------------------------------------:|
+|         authResult.Id          |   Уникальный идентификатор этого имени пользователя, ProjBobcat использует определенный метод генерации для генерации этого идентификатора   |
+|     authResult.AccessToken     |                  Учетные данные авторизации учетной записи пользователя                  |
+|      authResult.Profiles       |            Список доступных ролей для пользователя, может содержать несколько доступных ролей             |
+|   authResult.SelectedProfile   |    Текущая выбранная роль пользователя, это поле может быть пустым. Если оно пустое, пользователю необходимо предложить выбрать вручную.     |
+|        authResult.User         |            Сводка информации об учетной записи пользователя, содержит некоторую основную информацию об учетной записи             |
+|       authResult.LocalId       |             Локальный ID, обычно случайно сгенерированный UUID             |
+|      authResult.RemoteId       |         Удаленный ID, возвращенный сервером аутентификации, обычно уникальный идентификатор пользователя          |
+|       authResult.XBoxUid       |                XBox Live UID                |
+|        authResult.Email        |                 Адрес электронной почты, используемый для аутентификации                  |
+|   authResult.CurrentAuthTime   |   Текущее время аутентификации, **разработчикам необходимо сохранить это поле, чтобы помочь подтвердить действительность локального кэшированного токена**    |
+|      authResult.ExpiresIn      | Время истечения срока действия токена (единица измерения: секунды), **разработчикам необходимо сохранить это поле, чтобы помочь подтвердить действительность локального кэшированного токена** |
+|    authResult.RefreshToken     |       Токен обновления, **разработчикам необходимо сохранить это поле, чтобы помочь обновить просроченные токены**        |
+|        authResult.Skin         |                 URL-адрес скина учетной записи пользователя                 |
+
+:::warning
+
+Пожалуйста, используйте соответствующие ограничения или шифрование для безопасного хранения конфиденциальных данных, связанных с токенами пользователей. Утечка этой части данных может привести к потерям.
+
+:::
+
+---
+
+---
+url: /ruRU/projbobcat/authenticators/yggdrasil.md
+---
+# Система аутентификации Yggdrasil
+
+\[\[toc]]
+
+Эта система аутентификации реализует старую схему аутентификации Mojang, которая в настоящее время устарела.
+
+:::warning
+
+Продолжение использования этой системой для аутентификации официальных учетных записей будет рассматриваться как недействительный запрос.
+Однако эту систему все еще можно использовать для входа на серверы, использующие сторонние службы аутентификации (например, [AuthLib-Injector](https://github.com/yushijinhun/authlib-injector)).
+
+:::
+
+## Инициализация аутентификатора
+
+Вы можете инициализировать офлайн-аутентификатор с помощью следующего кода:
+
+```c#
+var yggdrasilAuthenticator = new YggdrasilAuthenticator
+{
+    AuthServer = "[CUSTOM_AUTH_SERVER]",
+    Email = "[EMAIL]",
+    LauncherAccountParser = launcherAccountParser,
+    Password = "[PASSWORD]"
+};
+```
+
+В приведенном выше блоке кода замените эти параметры в соответствии с вашей реальной ситуацией:
+
+|          Элемент           |                             Описание                              |
+|:---------------------:|:-----------------------------------------------------------:|
+| launcherAccountParser |                     Для инициализации парсера учетных записей лаунчера см. здесь                     |
+| \[CUSTOM\_AUTH\_SERVER]  | Необязательное поле, настраиваемый адрес сервера аутентификации, это поле обычно предоставляется сторонним поставщиком услуг аутентификации, если не заполнено, используется официальный адрес сервера аутентификации Mojang |
+|        \[EMAIL]        |                          Адрес электронной почты учетной записи аутентификации                          |
+|      \[PASSWORD]       |                           Пароль учетной записи аутентификации                           |
+
+:::tip
+
+Для инициализации **launcherAccountParser** (парсера игровых профилей) см. страницу [Парсер игровых профилей](/ruRU/projbobcat/additionalParsers/gameProfileParser).
+
+:::
+
+:::warning
+
+При использовании стороннего сервера аутентификации используйте протокол **https://**, а не **http://** для подключения к серверу аутентификации.
+Использование небезопасного сервера аутентификации может привести к таким проблемам, как утечка конфиденциальных данных.
+
+:::
+
+## Получение результата аутентификации
+
+После завершения инициализации системы аутентификации вам нужно только вызвать метод аутентификации офлайн-аутентификатора для завершения аутентификации учетной записи.
+
+В асинхронном контексте используйте **AuthTaskAsync** для завершения аутентификации:
+
+```c#
+var authResult = await offlineAuthenticator.AuthTaskAsync(false);
+```
+
+В синхронном контексте используйте **Auth** для завершения аутентификации:
+
+````c#
+var authResult = offlineAuthenticator.Auth();```
+
+## Интерпретация результата аутентификации
+
+После завершения метода аутентификации оно вернет результат аутентификации, который является объектом родительского типа [AuthResultBase](https://github.com/Corona-Studio/ProjBobcat/blob/master/ProjBobcat/ProjBobcat/Class/Model/Auth/AuthResultBase.cs).
+Все результаты аутентификации содержат значение перечисления **AuthStatus**, которое напрямую указывает на успех или неудачу аутентификации.
+Ниже вы можете увидеть интерпретацию результата аутентификации:
+
+### Неудачный результат аутентификации
+
+Определив, является ли **Error** пустым, вы можете легко определить, является ли результат аутентификации, возвращенный системой аутентификации, действительным.
+Объект **Error** будет содержать следующие поля, чтобы сообщить вам некоторые подробности:
+
+|              Поле               |        Описание        |
+|:-----------------------------:|:----------------:|
+|    authResult.Error.Cause     |    Конкретная причина проблемы     |
+|    authResult.Error.Error     |       Название ошибки       |
+| authResult.Error.ErrorMessage | Подробная информация об ошибке, может содержать решение |
+
+### Успешный результат аутентификации
+
+Если поле **Error** в результате аутентификации пусто, это означает, что эта аутентификация действительна. Успешный результат аутентификации будет содержать следующую информацию:
+
+|             Поле             |                   Описание                    |
+|:--------------------------:|:---------------------------------------:|
+|       authResult.Id        | Уникальный идентификатор этого имени пользователя, ProjBobcat использует определенный метод генерации для генерации этого идентификатора |
+|   authResult.AccessToken   |                Учетные данные авторизации учетной записи пользователя                |
+|    authResult.Profiles     |          Список доступных ролей для пользователя, может содержать несколько доступных ролей           |
+| authResult.SelectedProfile |  Текущая выбранная роль пользователя, это поле может быть пустым. Если оно пустое, пользователю необходимо предложить выбрать вручную.   |
+|      authResult.User       |          Сводка информации об учетной записи пользователя, содержит некоторую основную информацию об учетной записи           |
+|     authResult.LocalId     |           Локальный ID, обычно случайно сгенерированный UUID           |
+|    authResult.RemoteId     |       Удаленный ID, возвращенный сервером аутентификации, обычно уникальный идентификатор пользователя        |
+````
+
+---
+
+---
+url: /ruRU/projbobcat/authenticators/offline.md
+---
+# Система оффлайн-аутентификации
+
+\[\[toc]]
+
+Эта система аутентификации реализует самые основные функции аутентификации. Обычно используется для локальной отладки и аутентификации.
+
+:::warning
+
+Использование этой системы аутентификации в производственной среде может **нарушать законы об авторском праве или лицензионное соглашение с конечным пользователем** в некоторых странах и регионах. Для получения дополнительной информации см. [Лицензионное соглашение с конечным пользователем Mojang (на английском языке)](https://www.minecraft.net/en-us/eula).
+
+:::
+
+## Инициализация аутентификатора
+
+Вы можете инициализировать оффлайн-аутентификатор с помощью следующего кода:
+
+```c#
+var offlineAuthenticator = new OfflineAuthenticator
+{
+    LauncherAccountParser = launcherAccountParser,
+    Username = "[DISPLAY_NAME]"
+};
+```
+
+В приведенном выше блоке кода замените эти параметры в соответствии с вашей реальной ситуацией:
+
+|          Элемент           |             Описание              |
+|:---------------------:|:---------------------------:|
+| launcherAccountParser |   Для инициализации парсера учетных записей лаунчера см. [здесь]()   |
+|    \[DISPLAY\_NAME]     | Отображаемое имя в игре, обычно состоящее из английских символов, знаков и цифр  |
+
+:::tip
+
+Для инициализации **launcherAccountParser** (парсера игровых профилей) см. страницу [Парсер игровых профилей](/ruRU/projbobcat/additionalParsers/gameProfileParser).
+
+:::
+
+## Получение результата аутентификации
+
+После завершения инициализации системы аутентификации вам нужно только вызвать метод аутентификации оффлайн-аутентификатора для завершения аутентификации учетной записи.
+
+В асинхронном контексте используйте **AuthTaskAsync** для завершения аутентификации:
+
+```c#
+var authResult = await offlineAuthenticator.AuthTaskAsync(false);
+```
+
+В синхронном контексте используйте **Auth** для завершения аутентификации:
+
+```c#
+var authResult = offlineAuthenticator.Auth();
+```
+
+## Интерпретация результата аутентификации
+
+После завершения метода аутентификации оно вернет результат аутентификации, который является объектом типа [AuthResultBase](https://github.com/Corona-Studio/ProjBobcat/blob/master/ProjBobcat/ProjBobcat/Class/Model/Auth/AuthResultBase.cs).
+Все результаты аутентификации содержат значение перечисления **AuthStatus**, которое напрямую указывает на успех или неудачу аутентификации.
+Ниже вы можете увидеть интерпретацию результата аутентификации:
+
+### Неудачный результат аутентификации
+
+Определив, является ли **Error** пустым, вы можете легко определить, является ли результат аутентификации, возвращенный системой аутентификации, действительным.
+Объект **Error** будет содержать следующие поля, чтобы сообщить вам некоторые подробности:
+
+|              Поле               |        Описание        |
+|:-----------------------------:|:----------------:|
+|    authResult.Error.Cause     |    Конкретная причина проблемы     |
+|    authResult.Error.Error     |       Название ошибки       |
+| authResult.Error.ErrorMessage | Подробная информация об ошибке, может содержать решение |
+
+### Успешный результат аутентификации
+
+Если поле **Error** в результате аутентификации пусто, это означает, что эта аутентификация действительна. Успешный результат аутентификации будет содержать следующую информацию:
+
+|             Поле              |                   Описание                    |
+|:---------------------------:|:---------------------------------------:|
+|        authResult.Id        | Уникальный идентификатор этого имени пользователя, ProjBobcat использует определенный метод генерации для генерации этого идентификатора |
+|   authResult.AccessToken    |       Учетные данные авторизации учетной записи пользователя, что не имеет смысла для системы оффлайн-аутентификации       |
+|    authResult.User.UUID     |    UUID этого пользователя, аналогично **authResult.Id**     |
+| authResult.User.Properties  |    Массив свойств пользователя, для системы оффлайн-аутентификации этот массив содержит только одно допустимое значение     |
+
+---
+
+---
+url: /ruRU/projbobcat/resourceCompleter/createAndConfigCompleter.md
+---
+# Создание и настройка комплитера
+
+\[\[toc]]
+
+## Инициализация комплитера
+
+Создать комплитер ресурсов очень просто, вам просто нужно использовать следующий код для завершения инициализации комплитера:
+
+```c#
+var completer = new DefaultResourceCompleter
+{
+    MaxDegreeOfParallelism = [MAX_DEGREE_OF_PARALLELISM],
+    ResourceInfoResolvers = new List<IResourceInfoResolver>
+    {
+        ...// Инициализация распознавателей информации о ресурсах
+    },
+    TotalRetry = [NUMBER_OF_TOTAL_RETRY],
+    CheckFile = [CHECK_FILE_AFTER_DOWNLOADED],
+    DownloadParts = [TOTAL_DOWNLOAD_SEGMENTS_FOR_LARGE_FILE]
+};
+```
+
+::: tip
+
+Руководства по инициализации распознавателей информации о ресурсах см. в разделе [Распознаватели информации о ресурсах](/ruRU/projbobcat/resourceCompleter/resourceInfoResolver/index).
+
+:::
+
+В приведенном выше блоке кода замените эти параметры в соответствии с вашей реальной ситуацией:
+
+|                    Элемент                    | Тип данных    |              Описание              |
+|:----------------------------------------:|:--------|:----------------------------:|
+|       \[MAX\_DEGREE\_OF\_PARALLELISM]        | INT     |    Степень параллелизма проверки ресурсов (количество одновременно проверяемых игровых ресурсов)     |
+|      \[CHECK\_FILE\_AFTER\_DOWNLOADED]       | BOOLEAN |  Проверка целостности файла после его загрузки (если существует контрольная сумма ресурса)  |
+| \[TOTAL\_DOWNLOAD\_SEGMENTS\_FOR\_LARGE\_FILE] | INT     |         Количество сегментов для загрузки больших файлов          |
+
+::: warning
+
+Значения **\[MAX\_DEGREE\_OF\_PARALLELISM]** и **\[TOTAL\_DOWNLOAD\_SEGMENTS\_FOR\_LARGE\_FILE]**
+следует настраивать в зависимости от производительности оборудования. Установка слишком больших значений может привести к снижению пропускной способности.
+
+:::
+
+## Завершение игровых ресурсов
+
+После завершения инициализации комплитера ресурсов вам нужно только вызвать метод завершения, чтобы начать операции проверки и завершения:
+
+В асинхронном контексте используйте **CheckAndDownloadTaskAsync** для завершения установки:
+
+```c#
+var result = await completer.CheckAndDownloadTaskAsync(); // [!code focus]
+
+if (result.TaskStatus == TaskResultStatus.Error && (result.Value?.IsLibDownloadFailed ?? false))
+{
+    // После завершения комплитер ресурсов вернет результат выполнения.
+    // Вы можете проверить значения свойств в result, чтобы определить, завершено ли завершение.
+    
+    // IsLibDownloadFailed отражает, были ли успешно завершены необходимые для запуска библиотеки.
+    // В общем, если завершение файлов библиотек не удалось, это, скорее всего, приведет к сбою запуска игры.
+}
+```
+
+В синхронном контексте используйте **CheckAndDownload** для завершения установки:
+
+```c#
+var result = completer.CheckAndDownload(); // [!code focus]
+```
+
+## Отчет о ходе выполнения
+
+В некоторых случаях комплитеру ресурсов может потребоваться несколько минут для завершения проверки и загрузки ресурсов.
+Поэтому вам может потребоваться сообщать пользователю о текущем ходе выполнения комплитера в режиме реального времени.
+
+### Отчет о ходе выполнения проверки ресурсов
+
+Вы можете получать ход проверки в режиме реального времени, зарегистрировав событие **GameResourceInfoResolveStatus**:
+
+```c#
+completer.GameResourceInfoResolveStatus += (_,  args) => 
+    { ReportProgress(args.Progress,  args.Status); };
+```
+
+Где **args.Progress** указывает текущий процент выполнения проверки. **args.Status** — это текстовое описание текущего этапа проверки.
+
+### Отчет о ходе загрузки файлов комплитером
+
+Вы можете получать ход проверки в режиме реального времени, зарегистрировав событие **DownloadFileCompletedEvent**:
+
+```c#
+completer.DownloadFileCompletedEvent += (sender,  args) =>
+{
+    // Параметр sender — это последний успешно загруженный файл комплитером, тип — DownloadFile.
+    // args возвращает статус загрузки этого файла (успешно/неудачно), а также счетчик повторных попыток файла,
+    // тип — DownloadFileCompletedEventArgs.
+};
+```
+
+::: tip
+
+* [Структура класса DownloadFile](https://github.com/Corona-Studio/ProjBobcat/blob/master/ProjBobcat/ProjBobcat/Class/Model/DownloadFile.cs)
+* [Структура события DownloadFileCompletedEventArgs](https://github.com/Corona-Studio/ProjBobcat/blob/master/ProjBobcat/ProjBobcat/Event/DownloadFileCompletedEventArgs.cs)
+
+:::
+
+### Отчет об информации о ходе загружаемых файлов
+
+Вы можете получать ход проверки в режиме реального времени, зарегистрировав событие **DownloadFileChangedEvent**:
+
+```c#
+rC.DownloadFileChangedEvent += (_,  args) =>
+{
+    // args возвращает подробную информацию о загружаемом файле (полученные байты, общее количество байтов, текущая скорость, процент выполнения).
+    // тип — DownloadFileChangedEventArgs.
+};
+```
+
+::: tip
+
+* [Структура события DownloadFileChangedEventArgs](https://github.com/Corona-Studio/ProjBobcat/blob/master/ProjBobcat/ProjBobcat/Event/DownloadFileChangedEventArgs.cs)
+
+:::
+
+---
+
+---
+url: /ruRU/projbobcat/installationAndConfig.md
+---
+# Установка и настройка ProjBobcat
+
+\[\[toc]]
+
+## Установка из пакета
+
+### Nuget
+
+В настоящее время вы можете легко найти и загрузить пакеты ProjBobcat из Nuget. Вы можете найти ProjBobcat в менеджере пакетов Visual Studio и добавить его в свой проект.
+
+Или вы можете вручную выполнить следующую команду в «Консоли диспетчера пакетов»:
+
+```bash
+NuGet\Install-Package ProjBobcat -Version 1.40.0
+```
+
+### .NET CLI
+
+Чтобы установить ProjBobcat через .NET CLI, вам просто нужно переключить терминал в каталог проекта, содержащий файл .csproj, и выполнить в терминале:
+
+```bash
+dotnet add package ProjBobcat --version 1.40.0
+```
+
+### PackageReference
+
+PackageReference — это новая спецификация управления пакетами, представленная Microsoft для современных проектов .NET.
+Подробную информацию можно найти в [MSDN](https://learn.microsoft.com/en-us/nuget/consume-packages/package-references-in-project-files).
+
+Вам просто нужно добавить в файл **\[Имя проекта].csproj** вашего проекта:
+
+```xml
+<PackageReference Include="ProjBobcat" Version="1.40.0" />
+```
+
+::: tip
+Здесь **1.40.0** — это номер версии ProjBobcat, вы можете заменить его другими номерами версий.
+Все выпуски можно просмотреть в [ProjBobcat - Nuget](https://www.nuget.org/packages/ProjBobcat#versions-body-tab).
+:::
+
+## Ссылка на исходный код
+
+Другой способ использовать ProjBobcat — это напрямую добавить репозиторий кода в ссылки вашего проекта.
+
+::: info
+Перед выполнением следующих команд вам может потребоваться сначала установить [Git CLI](https://git-scm.com/).
+:::
+
+### Клонирование репозитория ProjBobcat
+
+Используйте командную строку, чтобы переключиться в корневой каталог решения вашего проекта, и выполните следующий код в командной строке, чтобы завершить клонирование репозитория:
+
+```bash
+git clone https://github.com/Corona-Studio/ProjBobcat.git
+```
+
+### Использование Git Submodule для извлечения ProjBobcat
+
+::: tip
+Git Submodule — очень полезная функция, здесь мы показываем только ее самый основной вариант использования.
+Больше примеров использования вы можете найти в [официальной документации Git](https://git-scm.com/book/en/v2/Git-Tools-Submodules).
+:::
+
+Используйте командную строку, чтобы переключиться в корневой каталог решения вашего проекта, и выполните следующий код в командной строке, чтобы завершить клонирование репозитория:
+
+```bash
+git submodule add https://github.com/Corona-Studio/ProjBobcat.git
+```
+
+### Добавление ссылки на ProjBobcat
+
+Затем в представлении **Обозреватель решений** в Visual Studio щелкните правой кнопкой мыши имя решения в верхней части дерева.
+И выберите **«Добавить»-«Существующий проект»** и найдите **ProjBobcat.csproj** в папке проекта ProjBobcat, которую вы только что клонировали, в окне обзора файлов.
+
+Затем найдите проект, на который вам нужно сослаться на ProjBobcat, в **Обозревателе решений**, щелкните его правой кнопкой мыши и выберите **«Добавить»-«Ссылка на проект»**.
+Наконец, установите флажок ProjBobcat во всплывающем окне, чтобы завершить ссылку на него.
+
+## Конфигурация перед использованием
+
+### Изменение количества подключений по умолчанию
+
+Перед использованием ProjBobcat вам необходимо добавить некоторый код в точку входа вашей программы (обычно **App.xaml.cs** или **Program.cs**), чтобы инициализировать связанные службы ProjBobcat.
+
+Из-за ограничения максимального количества подключений по умолчанию в среде выполнения .NET вы можете столкнуться с узкими местами производительности при использовании модуля загрузки ProjBobcat.
+Поэтому вам необходимо добавить следующий код в точку входа, чтобы изменить максимальное количество подключений по умолчанию:
+
+```c#{3}
+using System.Net;
+
+ServicePointManager.DefaultConnectionLimit = 512;
+```
+
+### Регистрация и инициализация базовых служб
+
+Далее вам необходимо добавить этот код в точку входа, чтобы завершить инициализацию службы ProjBobcat:
+
+#### Инициализация контейнера служб
+
+```c#
+ServiceHelper.Init();
+```
+
+#### Инициализация службы CurseForge API (необязательно)
+
+Эта услуга является необязательной. Если вы не используете какие-либо службы, связанные с CurseForge, вы можете пропустить этот шаг.
+
+::: tip
+Перед регистрацией в сервисе CurseForge вам необходимо подготовить API KEY, выданный официальным CurseForge.
+Если у вас его еще нет, перейдите на [страницу приложения - CurseForge](https://support.curseforge.com/en/support/solutions/articles/9000208346-about-the-curseforge-api-and-how-to-apply-for-a-key), чтобы получить свой API KEY.
+:::
+
+::: warning
+API KEY — это конфиденциальные личные учетные данные, пожалуйста, храните API KEY в безопасности и не передавайте его другим.
+:::
+
+```c#
+CurseForgeAPIHelper.SetApiKey("[YOUR API KEY]");
+```
+
+Замените **\[YOUR API KEY]** на API KEY, который вы получили от официального CurseForge.
+
+#### Инициализация службы загрузки
+
+При инициализации службы загрузки вы можете выбрать настройку User Agent, используемого при запросе (по умолчанию «ProjBobcat»).
+
+```c#
+HttpClientHelper.Ua = "[YOUR UA]"; // Необязательно
+```
+
+### Настройка аутентификатора входа в Microsoft
+
+Для получения конкретных методов регистрации приложений Azure Active Directory перейдите по ссылке:
+[Как зарегистрировать приложение Azure](/ruRU/projbobcat/createNewAzureApp)
+
+::: tip
+Перед настройкой аутентификатора Microsoft вам необходимо зарегистрировать свое приложение в Azure и правильно его настроить.
+После завершения настройки вы получите строку Client ID.
+
+Связанные материалы:
+
+* [Официальный сайт Azure](https://azure.microsoft.com/en-us/)
+* [Поток кода устройства](https://learn.microsoft.com/en-us/azure/active-directory/develop/scenario-desktop-acquire-token-device-code-flow?tabs=dotnet)
+
+:::
+
+::: warning
+CLIENT ID — это конфиденциальные личные учетные данные, пожалуйста, храните CLIENT ID в безопасности и не передавайте его другим.
+:::
+
+```c#
+MicrosoftAuthenticator.Configure(new MicrosoftAuthenticatorAPISettings
+{
+    ClientId = "[YOUR CLIENT ID]",
+    TenentId = "consumers",
+    Scopes = new[] { "XboxLive.signin",  "offline_access",  "openid",  "profile",  "email" }
+});
+```
+
+После получения Client ID замените **\[YOUR CLIENT ID]** своим Client ID.
+
+---
+
+---
+url: /ruRU/projbobcat/installers/fabric.md
+---
+# Установщик Fabric
+
+\[\[toc]]
+
+::: tip
+
+Обратите внимание, что ProjBobcat реализует только автоматизированный процесс установки Fabric. Вам все равно нужно самостоятельно реализовать процессы поиска, загрузки и сохранения установочных пакетов Fabric.
+
+:::
+
+## Полезные ресурсы
+
+* [Официальный сайт Fabric](https://fabricmc.net/)
+* [Fabric Meta API](https://meta.fabricmc.net/)
+
+## Получение артефакта загрузчика Fabric
+
+Поскольку установщик Fabric в ProjBobcat требует, чтобы вы предоставили информацию об артефакте загрузчика от официального Fabric при инициализации установщика.
+Поэтому здесь мы кратко опишем, как получить эту информацию в соответствии с указанной версией Minecraft.
+
+::: info
+
+В этом примере мы будем использовать Minecraft 1.19.2, чтобы показать вам, как его получить.
+
+:::
+
+### Отправка запроса в Fabric Meta API
+
+Сначала вам нужно отправить запрос **HTTP GET** на [https://meta.fabricmc.net/v2/versions/loader/\[MC\_VERSION\]](https://meta.fabricmc.net/v2/versions/loader/1.19.2).
+Замените `[MC_VERSION]` на версию Minecraft, которую вы хотите установить. Здесь мы будем использовать 1.19.2.
+
+Вы увидите ответ, подобный следующему:
+
+```json
+[
+  {
+    "loader": {
+      "separator": ".",
+      "build": 11,
+      "maven": "net.fabricmc:fabric-loader:0.14.11",
+      "version": "0.14.11",
+      "stable": true
+    },
+    "intermediary": {
+      "maven": "net.fabricmc:intermediary:1.19.2",
+      "version": "1.19.2",
+      "stable": true
+    },
+    "launcherMeta": {
+      "version": 1,
+      "libraries": {...},
+      "mainClass": {...}
+    }
+  },
+  {...},
+  {...}
+]
+```
+
+Fabric Meta API вернет массив JSON, и каждый элемент в массиве — это артефакт загрузчика, который нам нужен.
+
+#### Преобразование ответа JSON в тип ProjBobcat
+
+Если вы используете [JSON.NET](https://www.newtonsoft.com/json) (Newtonsoft.JSON) в своем проекте.
+Вы можете использовать код, подобный приведенному ниже, для преобразования ответа сервера, который вы получили, в соответствующий тип ProjBobcat:
+
+```c#
+// Запрос данных из Fabric Meta API (пример, не реальный код)
+...
+var responseJson = await res.Content.ReadAsStringAsync();
+
+// Преобразование ответа JSON в тип ProjBobcat // [!code focus]
+var artifacts = JsonConvert.DeserializeObject<List<FabricLoaderArtifactModel>>(responseJson); // [!code focus]
+
+// Получение версии, которую хочет установить пользователь (пример, не реальный код)
+var userSelect = vm.SelectedArtifactIndex;
+
+// Получение одного артефакта загрузчика // [!code focus]
+var selectedArtifact = artifacts[userSelect]; // [!code focus]
+```
+
+Здесь **selectedArtifact** — это `FabricLoaderArtifactModel`, необходимый установщику Fabric.
+
+## Инициализация установщика
+
+Инициализировать установщик Fabric очень просто. Вам нужно использовать `selectedArtifact`, полученный на предыдущем шаге, для инициализации установщика:
+
+```c#
+var fabricInstaller = new FabricInstaller
+{
+    LoaderArtifact = selectedArtifact,
+    VersionLocator = [VERSION_LOCATOR_INST],
+    RootPath = "[GAME_ROOT_PATH]",
+    CustomId = "[CUSTOM_INSTALL_GAME_ID]",
+    InheritsFrom = "[MC_VERSION_OR_GAME_ID]"
+};
+```
+
+В приведенном выше блоке кода замените эти параметры в соответствии с вашей реальной ситуацией:
+
+|                 Элемент                  |                      Описание                       |
+|:-----------------------------------:|:---------------------------------------------:|
+|          \[GAME\_ROOT\_PATH]           |          Корневой каталог игры, обычно путь к папке .minecraft          |
+|      \[CUSTOM\_INSTALL\_GAME\_ID]       |              Необязательно, пользовательское имя игры, которую вы собираетесь установить               |
+|       \[MC\_VERSION\_OR\_GAME\_ID]       | Версия оригинальной игры Minecraft, от которой наследуется Forge, обычно версия игры. Например: 1.19.2  |
+|       \[VERSION\_LOCATOR\_INST]        |  Экземпляр локатора версий игры, то есть свойство **VersionLocator** при инициализации ядра игры   |
+
+## Начало установки
+
+После завершения инициализации установщика вам нужно только вызвать метод установки установщика Fabric для завершения установки.
+
+В асинхронном контексте используйте **InstallTaskAsync** для завершения установки:
+
+```c#
+await fabricInstaller.InstallTaskAsync();
+```
+
+В синхронном контексте используйте **Install** для завершения установки:
+
+````c#
+fabricInstaller.Install();```
+
+## Отчет о ходе установки
+
+В некоторых случаях установка с помощью установщика Fabric может занять несколько минут.
+Поэтому вам может потребоваться сообщать пользователю о текущем ходе установки в режиме реального времени.
+Для этого установщик Fabric предоставляет событие **StageChangedEventDelegate**, чтобы помочь вам реализовать отчет о задачах.
+Вам просто нужно зарегистрировать следующее событие **перед началом установки**:
+
+```c#
+fabricInstaller.StageChangedEventDelegate += (_,  args) => {
+    ReportProgress(args.Progress,  args.CurrentStage);
+};
+````
+
+Где **args.Progress** указывает текущий процент выполнения установщика. **args.CurrentStage** — это текстовое описание текущего этапа установщика.
+
+---
+
+---
+url: /ruRU/projbobcat/installers/forge.md
+---
+# Установщик Forge
+
+В ProjBobcat мы поддерживаем автоматическую установку Forge практически для всех основных версий Minecraft.
+
+\[\[toc]]
+
+::: tip
+
+Обратите внимание, что ProjBobcat реализует только автоматизированный процесс установки Forge. Вам все равно нужно самостоятельно реализовать процессы поиска, загрузки и сохранения установочных пакетов Forge.
+
+:::
+
+## Определение того, какой установщик Forge использовать
+
+Поскольку команда Forge изменила спецификацию упаковки и процесс установки Forge в последующих версиях, вам необходимо вручную определить, какой установщик использовать.
+В ProjBobcat мы уже реализовали для вас соответствующую логику определения. Вам просто нужно вызвать следующий метод:
+
+```c#
+var mcVersion = "[MC_VERSION]";
+var forgeJarPath = "[PATH_TO_YOUR_FORGE_INSTALLER]";
+var forgeVersion = ForgeInstallerFactory.GetForgeArtifactVersion(mcVersion, "[FORGE_VERSION]");
+
+var isLegacy = ForgeInstallerFactory.IsLegacyForgeInstaller(forgeJarPath, forgeVersion);  // [!code focus]
+```
+
+В приведенном выше блоке кода замените эти параметры в соответствии с вашей реальной ситуацией:
+
+|               Элемент                |                     Описание                     |
+|:-------------------------------:|:------------------------------------------:|
+|          \[MC\_VERSION]           |    Версия Minecraft для установки Forge, например: 1.19.2     |
+| \[PATH\_TO\_YOUR\_FORGE\_INSTALLER]  |           Путь к файлу .jar установщика Forge           |
+|         \[FORGE\_VERSION]         |      Конкретная версия Forge, обычно XX.X.X, например: 43.2.0      |
+
+После того, как вы завершите замену и успешно выполните приведенный выше фрагмент кода, **isLegacy** укажет, какой установщик Forge следует использовать для текущего установщика Forge.
+
+## Инициализация устаревшего установщика
+
+Если в описанном выше процессе значение **isLegacy** равно **true**, это означает, что вам необходимо использовать устаревший установщик для завершения установки Forge.
+Чтобы инициализировать устаревший установщик, просто создайте экземпляр **LegacyForgeInstaller** и укажите соответствующие параметры:
+
+```c#
+IForgeInstaller forgeInstaller =
+    new LegacyForgeInstaller
+            {
+                ForgeExecutablePath = "[PATH_TO_YOUR_FORGE_INSTALLER]",
+                RootPath = "[GAME_ROOT_PATH]",
+                CustomId = "[CUSTOM_INSTALL_GAME_ID]",
+                ForgeVersion = "[FORGE_VERSION]",
+                InheritsFrom = "[MC_VERSION_OR_GAME_ID]"
+            };
+```
+
+В приведенном выше блоке кода замените эти параметры в соответствии с вашей реальной ситуацией:
+
+|                 Элемент                 |                      Описание                      |
+|:----------------------------------:|:--------------------------------------------:|
+|          \[GAME\_ROOT\_PATH]          |         Корневой каталог игры, обычно путь к папке .minecraft          |
+|      \[CUSTOM\_INSTALL\_GAME\_ID]      |              Необязательно, пользовательское имя игры, которую вы собираетесь установить              |
+|      \[MC\_VERSION\_OR\_GAME\_ID]       | Версия оригинальной игры Minecraft, от которой наследуется Forge, обычно версия игры. Например: 1.19.2 |
+
+## Инициализация нового установщика
+
+```c#
+IForgeInstaller forgeInstaller =
+    new HighVersionForgeInstaller
+            {
+                ForgeExecutablePath = "[PATH_TO_YOUR_FORGE_INSTALLER]",
+                JavaExecutablePath = "[PATH_TO_YOUR_JAVA_RUNTIME]",
+                RootPath = "[GAME_ROOT_PATH]",
+                VersionLocator = [VERSION_LOCATOR_INST],
+                DownloadUrlRoot = "[LIBRARIES_URL_ROOT]",
+                CustomId = "[CUSTOM_INSTALL_GAME_ID]",
+                MinecraftVersion = "[MC_VERSION]",
+                MinecraftVersionId = "[ACTUAL_MC_GAME_ID]",
+                InheritsFrom = "[MC_VERSION_OR_GAME_ID]"
+            };
+```
+
+В приведенном выше блоке кода замените эти параметры в соответствии с вашей реальной ситуацией:
+
+|                 Элемент                  |                                      Описание                                       |
+|:-----------------------------------:|:-----------------------------------------------------------------------------:|
+|     \[PATH\_TO\_YOUR\_JAVA\_RUNTIME]     |                           Путь к среде выполнения Java (javaw.exe)                           |
+|        \[LIBRARIES\_URL\_ROOT]         |                Корневой URL-адрес источника загрузки, например: "https://bmclapi2.bangbang93.com/"                |
+|       \[VERSION\_LOCATOR\_INST]        |                  Экземпляр локатора версий игры, то есть свойство **VersionLocator** при инициализации ядра игры                   |
+|         \[ACTUAL\_MC\_GAME\_ID]         | Фактическое имя игры Minecraft, то есть имя оригинальной игры в папке **version**. В большинстве случаев это значение совпадает с **\[MC\_VERSION]**. |
+
+## Унифицированная инициализация на основе значения **isLegacy**
+
+Поскольку **LegacyForgeInstaller** и **HighVersionForgeInstaller** одновременно реализуют интерфейс **IForgeInstaller**.
+Поэтому вы можете легко использовать тернарный оператор для выборочной инициализации соответствующего установщика:
+
+```c#{4-100}
+var isLegacy = ForgeInstallerFactory.IsLegacyForgeInstaller(forgeJarPath, forgeVersion);
+
+IForgeInstaller forgeInstaller = isLegacy
+            ? new LegacyForgeInstaller
+            {
+                ForgeExecutablePath = "[PATH_TO_YOUR_FORGE_INSTALLER]",
+                RootPath = "[GAME_ROOT_PATH]",
+                CustomId = "[CUSTOM_INSTALL_GAME_ID]",
+                ForgeVersion = "[FORGE_VERSION]",
+                InheritsFrom = "[MC_VERSION_OR_GAME_ID]"
+            }
+            : new HighVersionForgeInstaller
+            {
+                ForgeExecutablePath = "[PATH_TO_YOUR_FORGE_INSTALLER]",
+                JavaExecutablePath = "[PATH_TO_YOUR_JAVA_RUNTIME]",
+                RootPath = "[GAME_ROOT_PATH]",
+                VersionLocator = [VERSION_LOCATOR_INST],
+                DownloadUrlRoot = "[LIBRARIES_URL_ROOT]",
+                CustomId = "[CUSTOM_INSTALL_GAME_ID]",
+                MinecraftVersion = "[MC_VERSION]",
+                MinecraftVersionId = "[ACTUAL_MC_GAME_ID]",
+                InheritsFrom = "[MC_VERSION_OR_GAME_ID]"
+            };
+```
+
+## Начало установки
+
+После завершения инициализации установщика вам нужно только вызвать метод установки установщика Forge для завершения установки.
+
+В асинхронном контексте используйте **InstallForgeTaskAsync** для завершения установки:
+
+```c#
+await forgeInstaller.InstallForgeTaskAsync();
+```
+
+В синхронном контексте используйте **InstallForge** для завершения установки:
+
+```c#
+forgeInstaller.InstallForge();
+```
+
+## Отчет о ходе установки
+
+В некоторых случаях установка с помощью установщика Forge может занять несколько минут.
+Поэтому вам может потребоваться сообщать пользователю о текущем ходе установки в режиме реального времени.
+Для этого установщик Forge предоставляет событие **StageChangedEventDelegate**, чтобы помочь вам реализовать отчет о задачах.
+Вам просто нужно зарегистрировать следующее событие **перед началом установки**:
+
+```c#
+((InstallerBase)forgeInstaller).StageChangedEventDelegate += (_,  args) =>
+{
+    ReportProgress(args.Progress * 100,  args.CurrentStage);
+};
+```
+
+Где **args.Progress** указывает текущий процент выполнения установщика. **args.CurrentStage** — это текстовое описание текущего этапа установщика.
+
+---
+
+---
+url: /ruRU/projbobcat/installers/liteloader.md
+---
+# Установщик LiteLoader
+
+\[\[toc]]
+
+::: tip
+
+Обратите внимание, что ProjBobcat реализует только автоматизированный процесс установки LiteLoader. Вам все равно нужно самостоятельно реализовать процессы поиска, загрузки и сохранения установочных пакетов LiteLoader.
+
+:::
+
+::: warning
+
+LiteLoader, как система модов для ранних версий Minecraft, долгое время не обслуживалась и не поддерживалась.
+Поэтому мы можем удалить поддержку установки LiteLoader в будущих версиях.
+
+:::
+
+## Полезные ресурсы
+
+* [LiteLoader Versions API](https://dl.liteloader.com/versions/versions.json)
+* [Документация разработчика BMCLAPI](https://bmclapidoc.bangbang93.com/)
+
+## Получение модели версии загрузки LiteLoader
+
+Поскольку установщик LiteLoader в ProjBobcat требует, чтобы вы предоставили информацию о загрузке от LiteLoader при инициализации установщика.
+Поэтому здесь мы кратко опишем, как получить эту информацию в соответствии с указанной версией Minecraft.
+
+::: info
+
+В этом примере мы будем использовать Minecraft 1.7.10, чтобы показать вам, как его получить.
+
+:::
+
+::: warning
+
+Поскольку официальный LiteLoader не предоставляет общедоступной документации по API, в этом процессе нам необходимо использовать сторонние зеркальные источники для получения данных.
+Здесь мы используем [BMCLAPI](https://bmclapidoc.bangbang93.com/) для получения соответствующей информации о версии.
+
+:::
+
+Сначала вам нужно отправить запрос **HTTP GET** на [https://bmclapi2.bangbang93.com/liteloader/list?mcversion=\[MC\_VERSION\]](https://bmclapi2.bangbang93.com/liteloader/list?mcversion=1.7.10).
+Замените `[MC_VERSION]` на версию Minecraft, которую вы хотите установить. Здесь мы будем использовать 1.7.10.
+
+Вы увидите ответ, подобный следующему:
+
+```json
+{
+  "_id": "59685511433f993503c1c879",
+  "mcversion": "1.7.10",
+  "build": {
+    "tweakClass": "com.mumfrey.liteloader.launch.LiteLoaderTweaker",
+    "libraries": [...],
+    "stream": "RELEASE",
+    "file": "liteloader-1.7.10.jar",
+    "version": "1.7.10_04",
+    "md5": "63ada46e033d0cb6782bada09ad5ca4e",
+    "timestamp": "1414368553",
+    "srcJar": "liteloader-1.7.10_04-mcpnames-sources.jar",
+    "mcpJar": "liteloader-1.7.10_04-mcpnames.jar"
+  },
+  "hash": "63ada46e033d0cb6782bada09ad5ca4e",
+  "type": "RELEASE",
+  "version": "1.7.10_04",
+  "__v": 0
+}
+```
+
+BMCLAPI вернет объект JSON. Десериализация этого объекта в тип ProjBobcat — это `LiteLoaderDownloadVersionModel`, который нам нужен.
+
+#### Преобразование ответа JSON в тип ProjBobcat
+
+Если вы используете [JSON.NET](https://www.newtonsoft.com/json) (Newtonsoft.JSON) в своем проекте.
+Вы можете использовать код, подобный приведенному ниже, для преобразования ответа сервера, который вы получили, в соответствующий тип ProjBobcat:
+
+```c#
+// Запрос данных из BMCLAPI (пример, не реальный код)
+...
+var responseJson = await res.Content.ReadAsStringAsync();
+
+// Преобразование ответа JSON в тип ProjBobcat // [!code focus]
+var versionModel = JsonConvert.DeserializeObject<LiteLoaderDownloadVersionModel>(responseJson); // [!code focus]
+```
+
+Здесь **versionModel** — это `LiteLoaderDownloadVersionMode`, необходимый установщику Fabric.
+
+## Получение RawVersionModel
+
+При инициализации установщика LiteLoader установщику необходимо использовать исходное содержимое JSON соответствующей версии игры Minecraft для LiteLoader.
+То есть содержимое файла `[ROOT_PATH]/versions/[MC_VERSION]/[MC_VERSION].json`.
+
+Если вы уже установили оригинальную игру, соответствующую LiteLoader, вы можете получить `RawVersionModel` с помощью следующего кода:
+
+```c#
+// Получение пути к файлу JSON версии
+var jsonPath = GamePathHelper.GetGameJsonPath(rP, id);
+
+// Чтение содержимого файла
+var jsonContent = await File.ReadAllTextAsync(jsonPath);
+
+// Преобразование содержимого JSON в RawVersionModel
+var baseVersionModel = JsonConvert.DeserializeObject<RawVersionModel>(jsonContent);
+```
+
+Здесь **baseVersionModel** — это `RawVersionModel`, необходимый установщику LiteLoader.
+
+## Инициализация установщика
+
+Инициализировать установщик LiteLoader очень просто.
+Вам нужно использовать `versionModel` и `baseVersionModel`, полученные на предыдущих шагах, для инициализации установщика:
+
+```c#
+var liteLoaderInstaller = new LiteLoaderInstaller
+{
+    InheritVersion = baseVersionModel,
+    InheritsFrom = "[MC_VERSION_OR_GAME_ID]",
+    RootPath = "[GAME_ROOT_PATH]",
+    VersionModel = versionModel,
+    CustomId = "[CUSTOM_INSTALL_GAME_ID]"
+};
+```
+
+В приведенном выше блоке кода замените эти параметры в соответствии с вашей реальной ситуацией:
+
+|                 Элемент                  |                      Описание                       |
+|:-----------------------------------:|:---------------------------------------------:|
+|          \[GAME\_ROOT\_PATH]           |          Корневой каталог игры, обычно путь к папке .minecraft          |
+|      \[CUSTOM\_INSTALL\_GAME\_ID]       |              Необязательно, пользовательское имя игры, которую вы собираетесь установить               |
+|       \[MC\_VERSION\_OR\_GAME\_ID]       | Версия оригинальной игры Minecraft, от которой наследуется Forge, обычно версия игры. Например: 1.19.2  |
+|       \[VERSION\_LOCATOR\_INST]        |  Экземпляр локатора версий игры, то есть свойство **VersionLocator** при инициализации ядра игры   |
+
+## Начало установки
+
+После завершения инициализации установщика вам нужно только вызвать метод установки установщика LiteLoader для завершения установки.
+
+В асинхронном контексте используйте **InstallTaskAsync** для завершения установки:
+
+````c#
+await liteLoaderInstaller.InstallTaskAsync();```
+
+В синхронном контексте используйте **Install** для завершения установки:
+
+```c#
+liteLoaderInstaller.Install();
+````
+
+## Отчет о ходе установки
+
+В некоторых случаях установка с помощью установщика LiteLoader может занять несколько минут.
+Поэтому вам может потребоваться сообщать пользователю о текущем ходе установки в режиме реального времени.
+Для этого установщик LiteLoader предоставляет событие **StageChangedEventDelegate**, чтобы помочь вам реализовать отчет о задачах.
+Вам просто нужно зарегистрировать следующее событие **перед началом установки**:
+
+```c#
+liteLoaderInstaller.StageChangedEventDelegate += (_, args) => {
+    ReportProgress(args.Progress, args.CurrentStage);
+};
+```
+
+Где **args.Progress** указывает текущий процент выполнения установщика. **args.CurrentStage** — это текстовое описание текущего этапа установщика.
+
+---
+
+---
+url: /ruRU/projbobcat/installers/optifine.md
+---
+# Установщик Optifine
+
+\[\[toc]]
+
+::: tip
+
+Обратите внимание, что ProjBobcat реализует только автоматизированный процесс установки Optifine. Вам все равно нужно самостоятельно реализовать процессы поиска, загрузки и сохранения установочных пакетов Optifine.
+
+:::
+
+## Полезные ресурсы
+
+* [Документация разработчика BMCLAPI](https://bmclapidoc.bangbang93.com/)
+
+## Получение модели версии загрузки Optifine
+
+Поскольку установщик LiteLoader в ProjBobcat требует, чтобы вы предоставили информацию о загрузке от LiteLoader при инициализации установщика.
+Поэтому здесь мы кратко опишем, как получить эту информацию в соответствии с указанной версией Minecraft.
+
+::: info
+
+В этом примере мы будем использовать Minecraft 1.19.2, чтобы показать вам, как его получить.
+
+:::
+
+::: warning
+
+Поскольку официальный Optifine не предоставляет общедоступной документации по API, в этом процессе нам необходимо использовать сторонние зеркальные источники для получения данных.
+Здесь мы используем [BMCLAPI](https://bmclapidoc.bangbang93.com/) для получения соответствующей информации о версии.
+
+:::
+
+Сначала вам нужно отправить запрос **HTTP GET** на [https://bmclapi2.bangbang93.com/optifine/\[MC\_VERSION\]](https://bmclapi2.bangbang93.com/optifine/1.19.2).
+Замените `[MC_VERSION]` на версию Minecraft, которую вы хотите установить. Здесь мы будем использовать 1.19.2.
+
+Вы увидите ответ, подобный следующему:
+
+```json
+[
+  {
+    "_id": "6307b8a38a3998ab475d139d",
+    "mcversion": "1.19.2",
+    "patch": "H9",
+    "type": "HD_U",
+    "__v": 0,
+    "filename": "OptiFine_1.19.2_HD_U_H9.jar",
+    "forge": "Forge 43.1.1"
+  },
+  {...},
+  {...}
+]
+```
+
+BMCLAPI вернет массив JSON, и каждый элемент в массиве — это модель версии загрузки, которая нам нужна.
+
+#### Преобразование ответа JSON в тип ProjBobcat
+
+Если вы используете [JSON.NET](https://www.newtonsoft.com/json) (Newtonsoft.JSON) в своем проекте.
+Вы можете использовать код, подобный приведенному ниже, для преобразования ответа сервера, который вы получили, в соответствующий тип ProjBobcat:
+
+```c#
+// Запрос данных из BMCLAPI (пример, не реальный код)
+...
+var responseJson = await res.Content.ReadAsStringAsync();
+
+// Преобразование ответа JSON в тип ProjBobcat // [!code focus]
+var versions = JsonConvert.DeserializeObject<List<OptifineDownloadVersionModel>>(responseJson); // [!code focus]
+
+// Получение версии, которую хочет установить пользователь (пример, не реальный код)
+var userSelect = vm.SelectedIndex;
+
+// Получение одной модели версии загрузки // [!code focus]
+var selectedVersion = versions[userSelect]; // [!code focus]
+```
+
+Здесь **selectedVersion** — это `OptifineDownloadVersionModel`, необходимый установщику Optifine.
+
+## Инициализация установщика
+
+Инициализировать установщик Optifine очень просто.
+Сначала вам нужно подготовить файл .jar установщика Optifine и доступную среду выполнения Java.
+Вам нужно использовать `selectedVersion`, полученный на предыдущем шаге, для инициализации установщика:
+
+```c#
+var optifineInstaller = new OptifineInstaller
+{
+    JavaExecutablePath = "[PATH_TO_YOUR_JAVA_RUNTIME]",
+    OptifineDownloadVersion = selectedVersion,
+    OptifineJarPath = "[PATH_TO_YOUR_OPTIFINE_JAR]",
+    RootPath = "[GAME_ROOT_PATH]",
+    CustomId = "[CUSTOM_INSTALL_GAME_ID]",
+    InheritsFrom = "[MC_VERSION_OR_GAME_ID]"
+};
+```
+
+В приведенном выше блоке кода замените эти параметры в соответствии с вашей реальной ситуацией:
+
+|                  Элемент                   |                      Описание                       |
+|:-------------------------------------:|:---------------------------------------------:|
+|           \[GAME\_ROOT\_PATH]            |          Корневой каталог игры, обычно путь к папке .minecraft          |
+|       \[CUSTOM\_INSTALL\_GAME\_ID]        |              Необязательно, пользовательское имя игры, которую вы собираетесь установить               |
+|        \[MC\_VERSION\_OR\_GAME\_ID]        | Версия оригинальной игры Minecraft, от которой наследуется Forge, обычно версия игры. Например: 1.19.2  |
+|        \[VERSION\_LOCATOR\_INST]         |  Экземпляр локатора версий игры, то есть свойство **VersionLocator** при инициализации ядра игры   |
+|      \[PATH\_TO\_YOUR\_OPTIFINE\_JAR]      |               Путь к вашему установочному пакету Optifine               |
+|      \[PATH\_TO\_YOUR\_JAVA\_RUNTIME]      |           Путь к среде выполнения Java (javaw.exe)           |
+
+## Начало установки
+
+После завершения инициализации установщика вам нужно только вызвать метод установки установщика Optifine для завершения установки.
+
+В асинхронном контексте используйте **InstallTaskAsync** для завершения установки:
+
+```c#
+await optifineInstaller.InstallTaskAsync();
+```
+
+В синхронном контексте используйте **Install** для завершения установки:
+
+```c#
+optifineInstaller.Install();
+```
+
+## Отчет о ходе установки
+
+В некоторых случаях установка с помощью установщика Optifine может занять несколько минут.
+Поэтому вам может потребоваться сообщать пользователю о текущем ходе установки в режиме реального времени.
+Для этого установщик Optifine предоставляет событие **StageChangedEventDelegate**, чтобы помочь вам реализовать отчет о задачах.
+Вам просто нужно зарегистрировать следующее событие **перед началом установки**:
+
+```c#
+optifineInstaller.StageChangedEventDelegate += (_,  args) => {
+    ReportProgress(args.Progress,  args.CurrentStage);
+};
+```
+
+Где **args.Progress** указывает текущий процент выполнения установщика. **args.CurrentStage** — это текстовое описание текущего этапа установщика.
+
+---
+
+---
+url: /ruRU/projbobcat/installers/quilt.md
+---
+# Установщик Quilt
+
+\[\[toc]]
+
+::: tip
+
+Обратите внимание, что ProjBobcat реализует только автоматизированный процесс установки Quilt. Вам все равно нужно самостоятельно реализовать процессы поиска, загрузки и сохранения установочных пакетов Quilt.
+
+:::
+
+::: warning
+
+Установщик Quilt в настоящее время находится на экспериментальной стадии, и связанные с ним API и процесс установки могут претерпеть значительные изменения.
+
+:::
+
+## Полезные ресурсы
+
+* [Официальный сайт Quilt](https://quiltmc.org/en/)
+* [Руководство по установке Quilt](https://quiltmc.org/en/install/)
+* [Quilt Meta API](https://meta.quiltmc.org/)
+
+## Проверка совместимости
+
+Перед началом установки Quilt вам необходимо проверить через Quilt Meta API, поддерживается ли версия Minecraft, которую вы собираетесь изменить.
+
+Сначала вам нужно отправить запрос **HTTP GET** на <https://meta.quiltmc.org/v3/versions/game>.
+
+Вы увидите ответ, подобный следующему:
+
+```json
+[
+  {
+    "version": "1.19.3",
+    "stable": true
+  },
+  {
+    "version": "1.19.3-rc3",
+    "stable": false
+  },
+  {...},
+  {...}
+]
+```
+
+Здесь вам нужно проверить, есть ли версия игры, которую вы собираетесь установить, в официальном списке поддержки Quilt.
+Вам нужно сравнить версию игры с полем `version` в объекте JSON.
+**Если вашей игры нет в списке поддержки, установка не может быть продолжена.**
+
+## Получение модели загрузчика Quilt
+
+Поскольку установщик Quilt в ProjBobcat требует, чтобы вы предоставили информацию о загрузке от Quilt при инициализации установщика.
+Поэтому здесь мы кратко опишем, как получить эту информацию в соответствии с указанной версией Minecraft.
+
+::: info
+
+В этом примере мы будем использовать Minecraft 1.19.2, чтобы показать вам, как его получить.
+
+:::
+
+Сначала вам нужно отправить запрос **HTTP GET** на <https://meta.quiltmc.org/v3/versions/loader>.
+
+Вы увидите ответ, подобный следующему:
+
+```json
+[
+  {
+    "separator": ".",
+    "build": 25,
+    "maven": "org.quiltmc:quilt-loader:0.18.1-beta.25",
+    "version": "0.18.1-beta.25"
+  },
+  {...},
+  {...}
+]
+```
+
+Quilt Meta API вернет массив JSON, и каждый элемент в массиве — это артефакт загрузчика, который нам нужен.
+
+#### Преобразование ответа JSON в тип ProjBobcat
+
+Если вы используете [JSON.NET](https://www.newtonsoft.com/json) (Newtonsoft.JSON) в своем проекте.
+Вы можете использовать код, подобный приведенному ниже, для преобразования ответа сервера, который вы получили, в соответствующий тип ProjBobcat:
+
+```c#
+// Запрос данных из Quilt Meta API (пример, не реальный код)
+...
+var responseJson = await res.Content.ReadAsStringAsync();
+
+// Преобразование ответа JSON в тип ProjBobcat // [!code focus]
+var artifacts = JsonConvert.DeserializeObject<List<QuiltLoaderModel>>(responseJson); // [!code focus]
+
+// Получение версии, которую хочет установить пользователь (пример, не реальный код)
+var userSelect = vm.SelectedArtifactIndex;
+
+// Получение одного артефакта загрузчика // [!code focus]
+var selectedArtifact = artifacts[userSelect]; // [!code focus]
+```
+
+Здесь **selectedArtifact** — это `QuiltLoaderModel`, необходимый установщику Fabric.
+
+## Инициализация установщика
+
+Инициализировать установщик Quilt очень просто. Вам нужно использовать `selectedArtifact`, полученный на предыдущем шаге, для инициализации установщика:
+
+```c#
+var quiltInstaller = new QuiltInstaller
+{
+    InheritsFrom = "[MC_VERSION_OR_GAME_ID]",
+    RootPath = "[GAME_ROOT_PATH]",
+    CustomId = "[CUSTOM_INSTALL_GAME_ID]",
+    LoaderArtifact = selectedArtifact
+};
+```
+
+В приведенном выше блоке кода замените эти параметры в соответствии с вашей реальной ситуацией:
+
+|                 Элемент                  |                      Описание                       |
+|:-----------------------------------:|:---------------------------------------------:|
+|          \[GAME\_ROOT\_PATH]           |          Корневой каталог игры, обычно путь к папке .minecraft          |
+|      \[CUSTOM\_INSTALL\_GAME\_ID]       |              Необязательно, пользовательское имя игры, которую вы собираетесь установить               |
+|       \[MC\_VERSION\_OR\_GAME\_ID]       | Версия оригинальной игры Minecraft, от которой наследуется Forge, обычно версия игры. Например: 1.19.2  |
+
+## Начало установки
+
+После завершения инициализации установщика вам нужно только вызвать метод установки установщика Fabric для завершения установки.
+
+В асинхронном контексте используйте **InstallTaskAsync** для завершения установки:
+
+```c#
+await quiltInstaller.InstallTaskAsync();
+```
+
+В синхронном контексте используйте **Install** для завершения установки:
+
+```c#
+quiltInstaller.Install();
+```
+
+## Отчет о ходе установки
+
+В некоторых случаях установка с помощью установщика Quilt может занять несколько минут.
+Поэтому вам может потребоваться сообщать пользователю о текущем ходе установки в режиме реального времени.
+Для этого установщик Quilt предоставляет событие **StageChangedEventDelegate**, чтобы помочь вам реализовать отчет о задачах.
+Вам просто нужно зарегистрировать следующее событие **перед началом установки**:
+
+```c#
+quiltInstaller.StageChangedEventDelegate += (_,  args) => {
+    ReportProgress(args.Progress,  args.CurrentStage);
+};
+```
+
+Где **args.Progress** указывает текущий процент выполнения установщика. **args.CurrentStage** — это текстовое описание текущего этапа установщика.
+
+---
+
+---
+url: /ruRU/projbobcat/installers/curseforge.md
+---
+# Установщик модпаков CurseForge
+
+\[\[toc]]
+
+::: tip
+
+Обратите внимание, что ProjBobcat реализует только автоматизированный процесс установки модпаков CurseForge. Вам все равно нужно самостоятельно реализовать процессы поиска, загрузки и сохранения модпаков CurseForge.
+
+:::
+
+## Полезные ресурсы
+
+* [Официальный сайт CurseForge](https://www.curseforge.com/)
+* [CurseForge API](https://docs.curseforge.com/)
+
+## Инициализация установщика
+
+Инициализировать установщик CurseForge очень просто:
+
+```c#
+var curseForgeInstaller = new CurseForgeInstaller
+{
+    GameId = "[CUSTOM_INSTALL_GAME_ID]",
+    ModPackPath = "[PATH_TO_YOUR_MODPACK]",
+    RootPath = "[GAME_ROOT_PATH]"
+};
+```
+
+В приведенном выше блоке кода замените эти параметры в соответствии с вашей реальной ситуацией:
+
+|                  Элемент                  |             Описание              |
+|:------------------------------------:|:---------------------------:|
+|           \[GAME\_ROOT\_PATH]           | Корневой каталог игры, обычно путь к папке .minecraft |
+|       \[CUSTOM\_INSTALL\_GAME\_ID]       |     Необязательно, пользовательское имя игры, которую вы собираетесь установить      |
+|        \[PATH\_TO\_YOUR\_MODPACK]        |     Путь к вашему модпаку CurseForge     |
+
+## Начало установки
+
+После завершения инициализации установщика вам нужно только вызвать метод установки установщика CurseForge для завершения установки.
+
+В асинхронном контексте используйте **InstallTaskAsync** для завершения установки:
+
+```c#
+await curseForgeInstaller.InstallTaskAsync();
+```
+
+В синхронном контексте используйте **Install** для завершения установки:
+
+```c#
+curseForgeInstaller.Install();
+```
+
+## Отчет о ходе установки
+
+В некоторых случаях установка с помощью установщика CurseForge может занять несколько минут.
+Поэтому вам может потребоваться сообщать пользователю о текущем ходе установки в режиме реального времени.
+Для этого установщик CurseForge предоставляет событие **StageChangedEventDelegate**, чтобы помочь вам реализовать отчет о задачах.
+Вам просто нужно зарегистрировать следующее событие **перед началом установки**:
+
+```c#
+curseForgeInstaller.StageChangedEventDelegate += (_,  args) => {
+    ReportProgress(args.Progress,  args.CurrentStage);
+};
+```
+
+Где **args.Progress** указывает текущий процент выполнения установщика. **args.CurrentStage** — это текстовое описание текущего этапа установщика.
+
+---
+
+---
+url: /ruRU/projbobcat/installers.md
+---
+# Установщики
+
+В ProjBobcat мы реализовали для разработчиков большую часть инфраструктуры модов, с которой вы можете столкнуться в процессе разработки Minecraft.
+
+## Список поддержки
+
+|      Название проекта       |    Статус поддержки     ||
+|:---------------:|:-----------:|:---:|
+|   Forge (старая версия)    |     Поддерживается     |  ✅   |
+|   Forge (новая версия)    |     Поддерживается     |  ✅  |
+|   LiteLoader    |     Поддерживается     |  ✅  |
+|     Fabric      |     Поддерживается     |  ✅  |
+|    Optifine     |     Поддерживается     |  ✅  |
+|      Quilt      |  Поддерживается (экспериментально)   |  ⚠  |
+| Модпаки CurseForge  |     Поддерживается     |  ✅  |
+
+---
+
+---
 url: /zhCN/mc-starter/play-together.md
 ---
 `@useFixer`
@@ -8445,6 +9504,191 @@ url: /zhCN/mc-starter/advanced/analyze-exception.md
 ---
 
 ---
+url: /zhCN/CMFS/help/guide-pure/survival-rules.md
+---
+`@useFixer`
+
+# 令行禁止、陟罚臧否
+
+在这里查看“生存服中，什么是可以做的，什么是不能做的”。
+
+\[\[toc]]
+
+## 处罚类型
+
+在服务器中存在以下类型的处罚。
+
+#### 1）世界内处罚
+
+包括但不限于：没收违规所得、清空账户（背包等）数据、清空常住地存储的物品、拆除建筑、移除存在痕迹`i`
+
+在服务器活跃玩家中超过2/3同意的情况下可以处以移除存在痕迹的惩罚。这将直接重新生成其住地的部分方块，或进一步扩大到删除其所有建筑和留下的文字信息。*只要是个正常人类应该都不会触发这一条*。`i`
+
+#### 2）行为限制
+
+包括但不限于：禁止使用指令、限制世界内行动、公屏禁言、禁止穿戴盔甲、禁止建造（若禁止建造特定类型的结构，若发现私自建造，可直接触发封禁）`i`
+
+#### 3）封禁和共享黑名单
+
+账户封禁一般都有时限，0.5~30天或更高不等，原则上不处以永久封禁。`i`
+
+对于未成年在校学生的封禁应该酌情适用非工作日计日。即，如果是行为恶劣且悔改态度不良的未成年在校学生（无论休学、走读与否），自动将封禁日分散到每个周末，并且在所有周末之间的工作日也保持封禁状态。*假设小乃龙符合条件并在周六起被封禁3天，实际封禁生效时长为此周六到下周六（包括周一到周五），周日当天解除封禁。实际情况会根据法定节假日调整，但是如果进一步恶劣也可以考虑只参考周末为非工作日。学校特殊假期（比如中高考考场假）或其他不在法定节假日的不在校情况不算在内。*`i`
+
+行为格外恶劣的，管理层将会在服主圈子内传播证据以警告其他服主慎重对待违规者。*一般来讲正常人在我们这不会出现这种情况*。`i`
+
+## 连坐制度和数罪并罚
+
+部分针对恶劣行为的处罚适用于连坐。连坐倍率由涉事账号数量决定，即：`i`
+
+```
+A * d = s
+A：涉事账号总数。如果持有者有其他已知小号，则一并算在内
+d：被裁定的总处罚量（封禁天数或其他量化数字，单位不同则分开计算）
+s：给每个账号的实际处罚量
+```
+
+假设Alex和Steve十分恶劣地偷了Noob的家、辱骂了Noob、许诺给Noob买瓜子却拖延兑现，而Alex持有小号Alexandr、Alexa、Aleksandrov、Alexandria（共持有5个账户在服务器内），则根据规定裁决的处罚量：辱骂他人（封禁1天）、恶劣盗窃（封禁3天、退回所得、清空作案账号数据）应如下计算：`i`
+
+```
+(5+1) * (1+3) = 24天（封禁每账户）
+附加：退回所得、清空账号Alex、Steve的数据
+封禁结果：Alex、Alexandr、Alexa、Aleksandrov、Alexandria、Steve六个账户分别被封禁24天
+```
+
+## 禁止行为
+
+### 故意骚扰
+
+* 坐在他人头上、占据他人建筑群内地皮，或其他被认为是骚扰行为，屡次要求停止但仍然未停止的，处以限制移动范围、限制命令使用一周，受害者可以主张赔偿。累计犯3次处3天以上封禁
+* 对他人污言秽语、骂人者，先处以5天以上封禁，然后禁言15天以上。累计犯3次将封禁。禁言同步到CMFS各群
+* 公屏骂战的所有参与方视为【影响服务器秩序-刷屏】并适用于连坐计算
+* 通过任意渠道骚扰其他玩家的，适用《公开群规》和本规则联合处罚。严重者将报至有关执法机关
+
+### 盗窃
+
+* 未留借用木牌的紧急借用、未经允许的取用、超过约定时间的借用、借用导致物品损坏且不赔偿，未得到物品主人宽容谅解的，被视为一般盗窃，勒令退还同样物品，累计犯3次处1天以上封禁
+* 破坏、拆解他人建筑物并将物品据为己有的，处3天以上封禁，退回违规所得
+
+### 恶意发起PVP
+
+* 若被攻击者明确表示不希望打架，发起者仍未停止攻击并造成被攻击者损失，发起者处以封禁3天以上
+* 若攻击者意图抢劫物品，处以15天以上封禁并退回违规所得，原则上允许清空账户数据
+* 建造陷阱坑害他人造成损失且没有警告标牌、没有得到谅解的，勒令赔偿，影响多人则封禁1天以上
+
+### 破坏
+
+* 制造封人塔、封人书：30天以上封禁，清空账户数据。原则上允许处以永久封禁
+* 故意破坏、引爆、制造机器引爆、机器卡服：15天以上封禁。原则上允许处以永久封禁
+* 故意破坏他人特殊建筑物（包括但不限于建筑群建筑、雕像、地图画、生电机器、生产场地）无论是否将材料、产品和其他在破坏过程中得到的物品据为己有，均需足额赔偿。限期内无法赔偿的，清空账户数据并封禁3天以上
+
+### 作弊
+
+所有类型的作弊均处以30天以上封禁，原则上可以处以永久封禁并被视为恶劣行为。
+
+### 影响服务器秩序
+
+* 打广告、引流：原则上处以永久封禁
+* 刷屏：禁言5天以上。犯三次则处以1天以上的封禁。禁言同步到CMFS各群
+* 卡恶性bug：区别于正常生电，利用脚本、插件、机制漏洞影响服务器平衡秩序，处以15天以上封禁，清空账户数据，上不封顶
+
+### 触犯现实法律
+
+* 触犯《民法典》或《治安管理处罚法》：视情况而定。如果在未违反上述其他服务器禁止条规的情况下原告决定在现实中对簿公堂，运维组将按需配合提供证据，或同时处以3天以上的封禁。
+* 触犯《刑法》或更高级法律：严重违规，将报告执法机关并依法提供证据和其他有关信息，并永久封禁。
+
+### 特别规则
+
+* 在服务器的主世界-矿石替换生效区域（区域：1752 6056; 1752 -312; 8384 -312; 8384 6056）为历史问题遗留区域。如果在矿石替换区内制造世吞或三向将被封禁七天以上
+* 原则上主世界不允许出现世吞或三向，若仅制造出来，勒令拆除；若启动，将强制删除机器并处以禁止使用命令一周的限制；若犯三次则处以5天以上的封禁
+* 破坏旧梦地建筑的，原则上可处以永久封禁
+* 标记有【禁止外借】工具被借出的，借出者没收工具并处以五天以上封禁，接受者处以三天以上封禁；若系偷盗抢劫，工具主人处以警告，偷盗者封禁一天并清空账户数据。
+
+## 案件处理
+
+案件参与方包括：原告（主张自己权益受到侵害的）、被告（原告主张的侵害人）、主理（法官，管理层成员）、助理（由法官指派，搜集证据或其他帮助案件处理的人）
+
+* 如果原告在短期内多次报案，且最终结果都是被告无罪，则应判原告为故意骚扰。
+* 根据实际影响判断依据罪名的量刑，主理有自由裁量权
+* 全体成员应共同维护这个虚拟社区的环境，监督改错、举报线索。对于部分恶劣行为，一般情况下，如果活跃玩家投票同意超过2/3，将适用条规中的极端处罚。
+
+## 证物
+
+证物包含文件证物和服务器记录。
+
+* 所有玩家有权限使用命令`/co i`来查询近期的方块操作记录。需要明确提供受损地点和容器的坐标（直接发送给主理）
+* 其他纠纷如有必要，管理员将调取服务器日志和特别事件日志。
+* 若要提交客户端日志、截图文件，必须确保文件包含**创建日期**、**修改日期**。不包含此类信息的线索必须结合其他玩家的线索交叉验证。
+
+## 创哥理赔
+
+只有适用于以下条件的损失适用于创哥理赔。将相关证据提交给管理员，管理员将会尝试弥补你的损失。
+
+* 物品借给其他玩家，且该玩家有1个自然年未上线，且该物品有自定义名称，提供重命名过程的截图（原物品属性、重命名后物品属性
+* 作为受害者遭遇禁止行为中认定的违规行为并受到损失、无法得到赔偿的，可以申请理赔
+* 因服务器更新、数据损坏、机制影响/覆盖 导致损失的
+
+以下情况因无法断定真实性或为个人原因，不进行理赔：
+
+* 被盗号或其他人操作导致的物品被扔
+* 非坑害导致的掉入虚空
+* 非坑害、被其他人攻击导致的掉落物被清除
+* 自己扔的（包括系统礼包因背包塞满而自动丢出，如果自己挂机导致物品丢失，自然算作个人原因）
+* 在历史遗留问题的矿物替换区域主动放置矿物装饰物但被脚本移除的
+
+## 允许的客户端Mod
+
+正常情况下，能适度优化游玩体验且不会给他人带来负面体验的模组是可以添加的。以下是部分列表用于让玩家了解哪些mod可以用。
+
+#### 完全禁止
+
+* 所有公认的作弊客户端和作弊模组。
+* 矿物透视
+
+#### 建议不要用
+
+* Tweakeroo：部分功能可能被认为是作弊
+* JourneyMap：单纯我觉得不够好用；鉴于服务器推荐整合包选择了Xaero系列，想必使用Xaero将会有更好的对共享路标的支持。
+* e4mc：你都玩服务器了还要这个做什么？
+
+#### 允许使用
+
+* Bobby
+* Litematica
+* AppleSkins
+* Xaero地图系列（小地图、大地图、XPlus）
+* 展示装备状态的HUD
+* 客户端性能优化类
+* Zoomify或其他类似的放大模组
+* Optifine
+* 各种连接纹理、UI优化（CozyUI等）
+* ……
+
+## 法律相关
+
+* CMFS（所有CMFS，除非另有说明），仅适用于中华人民共和国现行法律和瑞典Mojang AB的Eula、著作权声明。中国境外的用户使用CMFS同样需要遵守中华人民共和国法律。
+* 中华人民共和国执法机关持有有效搜查令的，运维组依法配合调查和提取证据。
+* 若在CMFS遇到合法权利受损，正在进行或即将进行诉讼需要证据，或报警立案的，运维组将尽全力固定和提供所需的证据。CMFS不承担任何因举证造成的损失或开支。
+* CMFS与任何的中国境内外的Minecraft著作权、商标持有人均不存在从属关系。CMFS依据Minecraft Eula等协议和其他参与的开/闭源软件许可证运营。
+* CMFS为学习和研究用途的公共服务部署实例，不承担因连接到CMFS后导致的任何损失的责任或其他连带责任。
+
+***
+
+## 管理准则
+
+违反管理准则的运维组/管理组成员将被暂停职务, 直到日冕工作室管理组决定恢复。
+
+### 核心思想
+
+游戏服务器管理人员应当以**维护所有人游戏体验和维护团队长期利益**为主要目标, 在服务器规则未明令禁止的情况下, 所有管理员有权利制止任何可能违背此目标的行为, 但是**一切处罚需要依照现行规则, 透明、公开地判罚和解释**。
+
+### 禁止行为
+
+* 禁止收费或免费地给予玩家非活动允许发放的物品
+* 如果玩家切实需要, 允许给予一些照顾, 但是禁止滥用。根据日志若被日冕管理组发现滥用,
+
+---
+
+---
 url: /zhCN/lxguide/features/dashboard.md
 ---
 # 仪表板
@@ -8504,13 +9748,6 @@ LauncherX使用一套独特的并行任务管理机制，使得启动器在有�
 2. 在其中新建文件，命名为`SET_TASK_QUEUE_SIZE`，不要给它留下后缀名
 3. 用喜欢的文本编辑器打开它，并且输入一个你需要的并行数量的阿拉伯数字，不得填入除了数字以外的任何其他字符
 4. 重新打开LauncherX，即可应用新指定的并行任务数量设置。
-
----
-
----
-url: /zhCN/CMFS/servers/project-lappland/story.md
----
-# 作为RPG - 故事背景
 
 ---
 
@@ -8921,145 +10158,6 @@ LauncherX是一个以社区驱动为主的启动器，在启动核心、文档�
 ::: danger 谨防诈骗！
 
  我们主动联系您开通权限时不会向您索取任何转账或验证码等信息！谨防诈骗！目前仅有**老腊肉**和**法棍**可能会主动联系用户开通权限，如果遇到信不过的人以给予权限为由和您联系，截屏并前往 LauncherX交流群 询问一下总是没错的。谨防诈骗！（相关阅读：[通用隐私政策和最终用户许可协议#免责声明 | 日冕知识库](/zhCN/geula.html#_3-免责声明) # [指路官方 | 日冕知识库](/zhCN/guide/contact.html) # [加入我们吧! | 日冕知识库](/zhCN/guide/joinus.html) # [我们的团队 | 日冕知识库](/zhCN/guide/team.html)）
-
-:::
-
----
-
----
-url: /ruRU/projbobcat/resourceCompleter/createAndConfigCompleter.md
----
-# 创建和配置补全器
-
-\[\[toc]]
-
-## 初始化补全器
-
-创建一个资源补全器的方法非常简单, 您只需要使用下面的代码即可完成补全器的初始化：
-
-```c#
-
-var completer = new DefaultResourceCompleter
-{
-    MaxDegreeOfParallelism = [MAX_DEGREE_OF_PARALLELISM],
-    ResourceInfoResolvers = new List<IResourceInfoResolver>
-    {
-        ... // 资源信息解析器的初始化
-    },
-    TotalRetry = [NUMBER_OF_TOTAL_RETRY],
-    CheckFile = [CHECK_FILE_AFTER_DOWNLOADED],
-    DownloadParts = [TOTAL_DOWNLOAD_SEGMENTS_FOR_LARGE_FILE]
-};
-
-```
-
-::: tip
-
-资源信息解析器的初始化相关教程请参见 [资源信息解析器](/ruRU/projbobcat/resourceCompleter/resourceInfoResolver/index) 章节
-
-:::
-
-在上述代码块中, 请将这些参数按照您的实际情况替换：
-
-|                    项目                    | 数据类型    |              说明              |
-|:----------------------------------------:|:--------|:----------------------------:|
-|       \[MAX\_DEGREE\_OF\_PARALLELISM]        | INT     |    资源检查并行程度（同时检查游戏资源的数量）     |
-|      \[CHECK\_FILE\_AFTER\_DOWNLOADED]       | BOOLEAN |  在文件下载完成后检查文件完整性（如果存在资源校检码）  |
-| \[TOTAL\_DOWNLOAD\_SEGMENTS\_FOR\_LARGE\_FILE] | INT     |         大文件下载时的分片数量          |
-
-::: warning
-
-**\[MAX\_DEGREE\_OF\_PARALLELISM]** 和 **\[TOTAL\_DOWNLOAD\_SEGMENTS\_FOR\_LARGE\_FILE]**
-的数值大小请视硬件性能酌情调整, 设置过大的数值可能会导致会导致吞吐量的下降.
-
-:::
-
-## 补全游戏资源
-
-在完成资源补全器的初始化操作后, 您只需要调用补全方法即可开始执行检查和补全操作：
-
-在异步上下文中, 使用 **CheckAndDownloadTaskAsync** 来完成安装：
-
-```c#
-
-var result = await completer.CheckAndDownloadTaskAsync(); // [!code focus]
-
-if (result.TaskStatus == TaskResultStatus.Error && (result.Value?.IsLibDownloadFailed ?? false))
-{
-    // 在完成补全后, 资源检查器会返回执行结果. 
-    // 您可以检查 result 中的属性值来确定补全是否完成
-    
-    // IsLibDownloadFailed 会反映启动必须的库文件是否已经成功补全
-    // 通常来说, 如果库文件的补全失败, 很有可能会导致游戏的启动失败
-}
-
-```
-
-在同步上下文中, 使用 **CheckAndDownload** 来完成安装：
-
-```c#
-
-var result = completer.CheckAndDownload(); // [!code focus]
-
-```
-
-## 报告进度
-
-在某些情况下, 资源补全器可能会需要数分钟的时间来完成资源的检查和下载.
-因此, 您可能需要实时向用户汇报补全器目前的进度.
-
-### 报告资源检查器的进度
-
-您可以通过注册事件 **GameResourceInfoResolveStatus** 来获取实时的检查进度：
-
-```c#
-
-completer.GameResourceInfoResolveStatus += (_, args) => 
-    { ReportProgress(args.Progress, args.Status); };
-
-```
-
-其中,  **args.Progress** 指示了检查器当前的百分比进度. **args.Status** 则是检查器当前进度的文字描述.
-
-### 报告补全器文件下载进度
-
-您可以通过注册事件 **DownloadFileCompletedEvent** 来获取实时的检查进度：
-
-```c#
-
-completer.DownloadFileCompletedEvent += (sender, args) =>
-{
-    // sender 参数为补全器上一个成功下载的文件, 类型为 DownloadFile
-    // args 返回了该文件的下载状态（成功 / 失败）, 以及文件的重试计数, 
-    // 类型为 DownloadFileCompletedEventArgs
-};
-
-```
-
-::: tip
-
-* [DownloadFile 类结构](https://github.com/Corona-Studio/ProjBobcat/blob/master/ProjBobcat/ProjBobcat/Class/Model/DownloadFile.cs)
-* [DownloadFileCompletedEventArgs 事件结构](https://github.com/Corona-Studio/ProjBobcat/blob/master/ProjBobcat/ProjBobcat/Event/DownloadFileCompletedEventArgs.cs)
-
-:::
-
-### 报告下载中的文件的进度信息
-
-您可以通过注册事件 **DownloadFileChangedEvent** 来获取实时的检查进度：
-
-```c#
-
-rC.DownloadFileChangedEvent += (_, args) =>
-{
-    // args 返回了下载中的文件的具体信息（已接收的字节数、总共的字节数、当前速度、百分比进度）
-    // 类型为 DownloadFileChangedEventArgs
-};
-
-```
-
-::: tip
-
-* [DownloadFileChangedEventArgs 事件结构](https://github.com/Corona-Studio/ProjBobcat/blob/master/ProjBobcat/ProjBobcat/Event/DownloadFileChangedEventArgs.cs)
 
 :::
 
@@ -9515,11 +10613,11 @@ url: /zhCN/guide/standard/cskb-formula.md
 :::
 
 如果要给个别段落启用段前缩进，首先要在文章上启用扩展功能。
-在文档的最开头处添加：`@useFixer`即可启用扩展。
+在文档的最开头处添加：\`@useFixer\`（`@useFixer`）即可启用扩展。
 然后，你需要在此文章内的段落的末尾添加一个任意内容的`code`块，比如：
 
 ```markdown
-
+`@useFixer`
 这只是一个很短的段落而已，对于它而言不需要段首缩进。但是如果整个段落很长很长很长的话，或许为了视觉友好考虑，或是为了规整文字的调性、平衡视觉，我们可以启用这样的段前缩进。只需要注意，保证`code`块处于末尾，这样的话它会隐藏，而段首的缩进就会出现。`i`
 
 ```
@@ -9533,7 +10631,7 @@ url: /zhCN/guide/standard/cskb-formula.md
 但是如果在这个code块后有其他文本内容，取消缩进将失效。比如：
 
 ```markdown
-
+`@useFixer`
 这只是一个很短的段落而已，对于它而言不需要段首缩进。但是如果整个段落很长很长很长的话，或许为了视觉友好考虑，或是为了规整文字的调性、平衡视觉，我们可以启用这样的段前缩进。只需要注意，保证`code`块处于末尾，这样的话它会隐藏，而段首的缩进就会出现。我们建议使用`i`作为标准的启用标签，这很合适，难道不是吗？
 
 ```
@@ -9812,6 +10910,60 @@ url: /zhCN/lxguide/settings/item/lx-account.md
 ---
 
 ---
+url: /zhCN/CMFS/help/guide-pure/survival-commands.md
+---
+`@useFixer`
+
+# 命令
+
+这里列出了一些有助于游戏或属于本服特色的命令。
+
+:::warning 没有进行分类
+
+有空再说
+
+:::
+
+* `/compass`: 打开一个类似HUD的指南针【来自：purpur】
+* `/logoff`: 登出当前子服
+* `/coi`: 查询方块操作记录（切换，相当于`/co i`）
+* `/avalon`: 前往主世界（幻想乡）
+* `/legacy`: 前往旧梦地
+* `/clear-my-trip <? | yes>`: 清除两个世界之间的跨越记录。附加yes表示确认清除。
+* `/where <~player>`: 查询一个玩家当前所在的维度。对方也将收到被你查询的通知。
+* `/age <? | all>`: 查询日龄。第一个参数留空以查询自己的日龄，使用all查询排行榜前十名。使用此命令有25秒冷却时间。
+* `/sos & /sos-solved`: 呼救。这将广播你的坐标和所处纬度。使用`/sos-solved`取消呼救。
+* `/disable-my-protect`: 在新手保护期期间使用此命令以提前关闭自己的新手保护。
+* `/setchatcolor <? | ~colorHexCode>`: 为自己的聊天文字设置颜色。留空则重置为默认。示例：`/setchatcolor <#39c5bb>`
+* `/report`: 将触发内置举报功能，下一条消息将作为举报内容发送到服务端。发送`.//`将取消此次举报。
+* `/joke`: 随机一条笑话。
+* `/random-info`: 随机一条Tips。
+* `/date & /date-info`: 查询日期的命令。后者会提供更完善的内容。
+* `/tell <~player> <~text>`: 说悄悄话，第一个参数是你要说给谁听（必须在线），第二个参数开始是你的悄悄话内容。请注意，悄悄话会被记录在服务器后台和双方客户端的日志之中。【来自：原版】
+* `/me <~text>`: 用一种戏剧化的方式发言或表达自己的状态到聊天区。
+* `/welcome_newbee`: 在新玩家进入服务器的时候，聊天区出现的“点我”实际上执行这个命令，将会发送一条有历史渊源的欢迎词。
+* `/tps`: 查询当前服务器的TPS（刻每秒，用于参考服务器运行压力，越高越好，一般20为上限）
+* `/ping`: 查询当前到服务器的真实延迟【来自：paper】
+* `/gsit`: 随地坐下【来自：GSit】
+* `/`: 未完待续（上次更新：2026年1月27日）
+
+## 注释
+
+### 符号含义
+
+* `<blablabla>`：命令参数。这意味着这里必须填入`blablabla`，否则无法达成命令介绍的效果。
+* `<? | blabla>`：命令参数可为空或blabla。
+* `<~player>`：输入任意一个玩家名称作为参数。
+* `<...text>`：输入任意文本，或多个参数都是文本。
+* `/cmd1 & /cmd2`：两个命令相同或差别很小。
+
+### 命令来源
+
+此处列举的命令有多个来源。它可能来自原版游戏，可能来自服务端，或者来自哪个插件或脚本。本页标注的所有非自定义命令（使用脚本或定制插件实现的）都标注了来源。`i`
+
+---
+
+---
 url: /zhCN/lxguide/features/tricks/default-jre-for-pack.md
 ---
 # 在完整包中包含默认选中的Java
@@ -9850,46 +11002,6 @@ url: /zhCN/lxguide/features/tricks/default-jre-for-pack.md
 ::: warning 部分细节未经测试
 
 暂时无法确认：在macOS/Linux下，保存JRE的文件夹应该跟随其他文件夹一起解压到Documents还是保持和启动器本身在一起。
-
-:::
-
----
-
----
-url: /ruRU/projbobcat/beforeWeStart.md
----
-# 在我们开始之前
-
-在我们正式开始使用 ProjBobcat, 您需要对您的项目属性做一下必要的检查和调整以满足 ProjBobcat 的运行需要.
-
-\[\[toc]]
-
-## 运行时要求
-
-您需要保证您项目的 dotNET 框架至少运行在 .NET 6.0 及更高的版本当中以满足.
-
-目前受支持的 .NET 版本：
-
-* .NET 6.0
-* .NET 7.0 （推荐）
-
-::: warning
-
-我们在先前的版本更新中已经移除了对 **.NET 5.0** 运行时的支持.
-
-:::
-
-## 项目属性
-
-由于 Windows 系统机制, 您需要在项目属性中关闭 **首选 32 位** 的生成选项. 否则您在使用 ProjBobcat 部分组件时会出现预料之外的结果.
-
-您需要在 Visual Studio 中切换到项目的属性页面, 并找到 **首选 32 位** 的勾选框, 并将其取消勾选.
-
-## 32 位系统支持
-
-::: warning
-
-ProjBobcat 从项目立项开始就决定放弃对 32 位系统的全部支持, 因为它真的很老, 很老了（
 
 :::
 
@@ -10202,27 +11314,6 @@ url: /zhTW/dashboard/search.md
 ---
 
 ---
-url: /ruRU/projbobcat/installers.md
----
-# 安装器
-
-在 ProjBobcat 中, 我们已经为开发者实现了您在 MineCraft 开发过程中可能遇到的大部分模组基础设施.
-
-## 支持列表
-
-|      项目名称       |    支持状态     ||
-|:---------------:|:-----------:|:---:|
-|   Forge （旧版）    |     受支持     |  ✅   |
-|   Forge （新版）    |     受支持     |  ✅  |
-|   LiteLoader    |     受支持     |  ✅  |
-|     Fabric      |     受支持     |  ✅  |
-|    Optifine     |     受支持     |  ✅  |
-|      Quilt      |  受支持（实验性）   |  ⚠  |
-| CurseForge 整合包  |     受支持     |  ✅  |
-
----
-
----
 url: /zhCN/projbobcat/installers.md
 ---
 # 安装器
@@ -10240,175 +11331,6 @@ url: /zhCN/projbobcat/installers.md
 |    Optifine     |     受支持     |  ✅  |
 |      Quilt      |  受支持（实验性）   |  ⚠  |
 | CurseForge 整合包  |     受支持     |  ✅  |
-
----
-
----
-url: /ruRU/projbobcat/installationAndConfig.md
----
-# 安装并配置 ProjBobcat
-
-\[\[toc]]
-
-## 从发行包安装
-
-### Nuget
-
-目前, 您可以方便的从 Nuget 上搜索并下载 ProjBobcat 的软件包, 您可以在 Visual Studio 的包管理器中搜索 ProjBobcat 并将其添加到您的项目中.
-
-或者, 您也可以手动在 “程序包管理器控制台” 中执行下面的命令：
-
-```bash
-NuGet\Install-Package ProjBobcat -Version 1.16.0
-```
-
-### .NET CLI
-
-要通过 .NET CLI 来安装 ProjBobcat, 您只需要将终端切换到包含 .csproj 文件的项目目录, 并在终端中执行：
-
-```bash
-dotnet add package ProjBobcat --version 1.16.0
-```
-
-### PackageReference
-
-PackageReference 是微软为现代 .NET 项目推出的一种新的软件包管理规范,
-详细信息可以在 [MSDN](https://learn.microsoft.com/en-us/nuget/consume-packages/package-references-in-project-files)
-中查看
-
-您只需在项目的 **\[项目名].csproj** 文件中添加：
-
-```xml
-<PackageReference Include="ProjBobcat" Version="1.16.0" />
-```
-
-::: tip
-其中, **1.16.0** 为 ProjBobcat 的版本号, 您可以将其替换为其他的版本号,
-所有的发行版本都可以在 [ProjBobcat - Nuget](https://www.nuget.org/packages/ProjBobcat#versions-body-tab) 中查看.
-:::
-
-## 从源码引用
-
-另外一种使用 ProjBobcat 的方法是直接添加代码仓库到您的项目引用.
-
-::: info
-在执行下面的命令前, 您可能需要先安装 [Git CLI](https://git-scm.com/)
-:::
-
-### 克隆 ProjBobcat 仓库
-
-使用命令行切换到项目解决方案的根目录, 并在命令行中执行下面的代码来完成仓库的克隆：
-
-```bash
-git clone https://github.com/Corona-Studio/ProjBobcat.git
-```
-
-### 使用 Git Submodule（子模块）的方式拉取 ProjBobcat
-
-::: tip
-Git Submodule 是一个非常实用的功能, 在这里我们只展示了其最基本的用例.
-在 [Git 官方文档](https://git-scm.com/book/en/v2/Git-Tools-Submodules) 中您可以查看到更多的使用案例.
-:::
-
-使用命令行切换到项目解决方案的根目录, 并在命令行中执行下面的代码来完成仓库的克隆：
-
-```bash
-git submodule add https://github.com/Corona-Studio/ProjBobcat.git
-```
-
-### 添加对 ProjBobcat 的引用
-
-接下来, 在 Visual Studio 的 **解决方案资源管理器** 视图中, 右键点击位于树状图顶层的解决方案名称.
-并选择 **“添加”-“现有项目”**, 并在文件浏览窗口中找到刚刚克隆的 ProjBobcat 项目文件夹中的 **ProjBobcat.csproj**.
-
-接着, 在 **解决方案资源管理器** 找到您需要引用 ProjBobcat 的项目, 并右键单击, 选择 **“添加”-“项目引用”**.
-最后在弹出窗口中勾选 ProjBobcat 即可完成对其的引用.
-
-## 使用前配置
-
-### 修改默认连接数
-
-在使用 ProjBobcat 之前, 您需要在程序的入口点（通常是 **App.xaml.cs** 或 **Program.cs**）
-中添加一些代码来初始化 ProjBobcat 的相关服务.
-
-由于 .NET 运行时默认的最大连接数限制, 在使用 ProjBobcat 下载模块时可能会遭遇性能瓶颈.
-因此, 您需要在入口处添加下面的代码来修改默认的最大连接数：
-
-```c#{3}
- using System.Net;
-
- ServicePointManager.DefaultConnectionLimit = 512;
-```
-
-### 注册并初始化基础服务
-
-接下来, 您需要在入口点添加这些代码来完成 ProjBobcat 服务的初始化：
-
-#### 初始化服务容器
-
-```c#
-ServiceHelper.Init();
-```
-
-#### 初始化 CurseForge API 服务（可选）
-
-该服务为可选项目, 如果您没有使用任何 CurseForge 相关服务, 您可以忽略这个步骤.
-
-::: tip
-在注册 CurseForge 服务前, 您需要准备 CurseForge 官方下发的 API KEY.
-如果您还没有, 请前往 [申请页面 - CurseForge](https://support.curseforge.com/en/support/solutions/articles/9000208346-about-the-curseforge-api-and-how-to-apply-for-a-key)
-来获得您的 API KEY.
-:::
-
-::: warning
-API KEY 为敏感的个人凭据, 请妥善保存 API KEY 并不要将其泄露给其他人.
-:::
-
-```c#
-CurseForgeAPIHelper.SetApiKey("[YOUR API KEY]");
-```
-
-将 **\[YOUR API KEY]** 替换为您从 CurseForge 官方获取的 API KEY.
-
-#### 初始化下载服务
-
-在初始化下载服务时您可以选择自定义请求时所使用的 User Agent（默认为 "ProjBobcat"）.
-
-```c#
-HttpClientHelper.Ua = "[YOUR UA]"; // 可选
-HttpClientHelper.Init();
-```
-
-### 配置微软登录验证器
-
-关于 Azure Active Directory 应用具体的注册方法请移步：
-[如何注册 Azure 应用](/ruRU/projbobcat/createNewAzureApp)
-
-::: tip
-在配置微软验证器前, 您需要在 Azure 注册您的应用, 并对其进行正确的配置.
-在您完成配置之后, 您会获得一串 Client ID.
-
-相关资料：
-
-* [Azure 官网](https://azure.microsoft.com/en-us/)
-* [Device code flow](https://learn.microsoft.com/en-us/azure/active-directory/develop/scenario-desktop-acquire-token-device-code-flow?tabs=dotnet)
-
-:::
-
-::: warning
-CLIENT ID 为敏感的个人凭据, 请妥善保存 CLIENT ID 并不要将其泄露给其他人.
-:::
-
-```c#
-MicrosoftAuthenticator.Configure(new MicrosoftAuthenticatorAPISettings
-{
-    ClientId = "[YOUR CLIENT ID]",
-    TenentId = "consumers",
-    Scopes = new[] { "XboxLive.signin", "offline_access", "openid", "profile", "email" }
-});
-```
-
-在取得 Client ID 后, 将 **\[YOUR CLIENT ID]** 替换为您的 Client ID.
 
 ---
 
@@ -11632,30 +12554,6 @@ url: /zhCN/mc-starter/useful-links.md
 ---
 
 ---
-url: /zhCN/CMFS/servers/project-lappland/rules.md
----
-# 服务器规则
-
-\[\[toc]]
-
-## 禁止
-
-* 原版生电
-* 卡服以及其他创造大量实体的行为
-* 不宣而战 - 偷袭行为和其他不正当破坏行为将受到惩罚
-* 破坏任务地点
-* 利用bug的其他恶性的行为
-* 围堵任务地点或副本入口
-* 其他违反公序良俗的行为
-
-## 明确允许
-
-* 向任何非保护期内的聚落宣战（必须先通过系统功能发起）
-* 约架PVP（必须通过系统功能发起，且参与双方都将临时启用死亡不掉落）
-
----
-
----
 url: /zhCN/CMFS/servers.md
 ---
 # 查看附属服务器和子服务器
@@ -11798,11 +12696,17 @@ url: /zhCN/CMFS.md
 
 ——首先，感谢你选择加入 CraftMineFun Server - Minecraft群组服务器（以下简称CMFS）。本系列指南将会帮助你理解关于CMFS的一切，并发挥你的主观能动性，利用我们提供的特色玩法来建设、游览。和您的朋友们一起，抑或是在这里认识新朋友，合作游玩，或者竞赛角逐。请放心，由我们的团队来维护您的体验。如果您遇到了游玩体验上的问题，请**立即联系我们**！
 
+欢迎加入总群：`419902868` 或Pure群：`805935004`。这些群聊遵从日冕工作室的[公开交流群管理规定和条款](/zhCN/guide/standard/code-of-open-groups)
+
 :::warning 存在服务器处于暂停运营的状态
 
 请等待另行通知（2025年2月27日）
 
-或加入群 **419902868**(CMFS主群) 等待第一时间的通知。
+:::
+
+:::tip 账户和个人验证
+
+目前所有服务器只能使用微软账户验证，即必须使用正版国际版账户登录。
 
 :::
 
@@ -11812,7 +12716,21 @@ url: /zhCN/CMFS.md
 
 负责人：法棍`#纯净群组` `#生存` `#插件`
 
-*暂时因技术原因停服*
+目前已开放：
+
+* Pure 生存服
+
+:::info 连接信息
+
+* 游戏版本：推荐【1.21.8】游玩（兼容1.21.2~1.21.8）
+* 地址：`pure.craftmine.fun` | `pure.cmfs.kami.su`（海外解析）
+* 生存服允许部分优化模组。参见：[Pure生存服详细规则](/zhCN/CMFS/help/guide-pure/survival-rules)
+
+:::
+
+加入群`805935004`了解更多！
+
+[需要帮助？](/zhCN/CMFS/help/guide-pure/)
 
 ***
 
@@ -11822,7 +12740,7 @@ url: /zhCN/CMFS.md
 
 *正在策划中，敬请期待！*
 
-此服务器计划正在招贤纳士！
+此服务器计划正在招贤纳士
 
 ***
 
@@ -11830,7 +12748,16 @@ url: /zhCN/CMFS.md
 
 负责人：Dxir`#纯净群组` `#小游戏` `#多版本`
 
-*正在建造中，敬请期待！欢迎入伙共建！*
+目前已开放：
+
+* 黎明杀鸡
+* 起床战争
+
+通过Pure群组服加入小游戏！
+
+有玩法、有想法？欢迎与我们共同建设Radost！[了解更多](/zhCN/CMFS/help/guide-radost/)
+
+***
 
 ---
 
@@ -12292,41 +13219,6 @@ var launcherAccountParser
 ---
 
 ---
-url: /ruRU/projbobcat/resourceCompleter/resourceInfoResolver/versionInfoResolver.md
----
-# 版本信息解析器
-
-\[\[toc]]
-
-版本信息解析器提供了对游戏资产文件的解析和验证功能, 这些文件存放在
-`.minecraft/versions/{GAME_VERSION}/{GAME_VERSION}.jar` 目录下, 这些文件是启动 MineCraft 所必需的核心文件.
-
-## 初始化解析器
-
-你可以通过下面的代码来初始化初始化解析器：
-
-```c#
-
-var resolver = new VersionInfoResolver
-{
-    BasePath = "[GAME_ROOT_PATH]",
-    VersionInfo = [SEARCHED_VERSION_INFO],
-    CheckLocalFiles = [CHECK_LOCAL_FILES]
-};
-
-```
-
-在上述代码块中, 请将这些参数按照您的实际情况替换：
-
-|           项目            |               说明                |
-|:-----------------------:|:-------------------------------:|
-|    \[GAME\_ROOT\_PATH]     |   游戏根目录, 通常为 .minecraft 文件夹的路径   |
-| \[SEARCHED\_VERSION\_INFO] | 要检查的版本的 VersionInfo （通过游戏定位器获得） |
-|   \[CHECK\_LOCAL\_FILES]   |    检查本地文件（如果为 false, 则跳过所有检查）    |
-
----
-
----
 url: /zhCN/projbobcat/resourceCompleter/resourceInfoResolver/versionInfoResolver.md
 ---
 # 版本信息解析器
@@ -12408,27 +13300,6 @@ LauncherX是**强制版本隔离**的，这意味着LauncherX**不能直接地�
 您下载、导入或安装的每一个独立的游戏版本都可以被专门进行设置。比如指定其使用特定的JRE，或者指定特别的启动参数.
 
 在「游戏列表」中，您可以点击列表中任意一个代表游戏的项目，LauncherX将在主窗口的右侧抽出对应的具体设置界面。您可以像在[全局设置](/zhCN/lxguide/settings/item/global)中一样设置**仅对这个游戏生效的**设置项。记得点右上角的保存。独立的设置将针对这个游戏覆盖默认的全局设置.
-
----
-
----
-url: /zhCN/CMFS/servers/project-lappland/gameplay.md
----
-# 玩法
-
-ProjLapp的剧情主要侧重于营造氛围和环境，主要玩法是特定的模组生存。
-
-## 生存
-
-全天候的玩法。围绕着故事进行经营、建立自己的聚落定居点、感受和邻居之间的“地缘事务”——就像19~20世纪的艾美莉卡西部一样，这里距离“总部”很远，这里是无主之地。
-
-## 故事
-
-你是怎么来到这里的？你又是为了什么来到这里？想必你有自己的答案——“总部”选定你参与到这样的远星拓荒之中，对你来说究竟是扬名立万的机会，还是将你推入了无底的深渊？
-
-## 活动
-
-限时游玩的故事或经营玩法。
 
 ---
 
@@ -13133,25 +14004,6 @@ url: /zhTW/projbobcat/resourceCompleter/resourceInfoResolver.md
 ---
 
 ---
-url: /ruRU/projbobcat/resourceCompleter/resourceInfoResolver.md
----
-# 资源信息解析器
-
-在 ProjBobcat 中, 我们使用 **资源信息解析器**（ResourceInfoResolver）
-来帮助资源补全器确定 MineCraft 缺失的文件.
-
-下表展示了目前 ProjBobcat 所支持的资源解析器：
-
-|            类名            |                 简介                  |
-|:------------------------:|:-----------------------------------:|
-|    AssetInfoResolver     |     用于解析游戏所需要的资产（音频、语言、字体和贴图等）      |
-| GameLoggingInfoResolver  | 用于解析 MineCraft 官方所提供的 log4j 日志格式化组件 |
-|   LibraryInfoResolver    |           用于解析游戏启动所必须的库文件           |
-|   VersionInfoResolver    |       用于解析游戏 JSON 中提供的 JAR 文件       |
-
----
-
----
 url: /zhCN/projbobcat/resourceCompleter/resourceInfoResolver.md
 ---
 # 资源信息解析器
@@ -13167,16 +14019,6 @@ url: /zhCN/projbobcat/resourceCompleter/resourceInfoResolver.md
 | GameLoggingInfoResolver  | 用于解析 MineCraft 官方所提供的 log4j 日志格式化组件 |
 |   LibraryInfoResolver    |           用于解析游戏启动所必须的库文件           |
 |   VersionInfoResolver    |       用于解析游戏 JSON 中提供的 JAR 文件       |
-
----
-
----
-url: /ruRU/projbobcat/resourceCompleter.md
----
-# 资源补全器
-
-在 ProjBobcat 中, 我们为开发者提供了用于补全 MineCraft 核心资源文件的补全器.
-这些资源包括：游戏音频、材质、贴图、语言文件、启动所必须的库文件等.
 
 ---
 
@@ -13697,72 +14539,6 @@ CSKB 在原则上要求贡献者基于MIT许可证提交内容贡献。我们建
 ## 文档有效性
 
 2025年2月27日：暂行/无效，因为尚未完成审核。
-
----
-
----
-url: /ruRU/projbobcat/createNewAzureApp.md
----
-# 配置 Azure 应用
-
-\[\[toc]]
-
-## 开始配置
-
-在开始之前, 您首先需要一个微软账号. 注册 Azure Active Directory 应用无需任何费用.
-
-使用您的微软账户登录 [Azure 门户](https://portal.azure.com/#home)
-在完成登录后, 您看到的页面应该是这样的：
-
-![Azure Portal](/img/projbobcat/installationAndConfig/configMSAuth/step_1.png)
-
-点击 **Azure 服务** 下的 **Azure Active Directory**
-
-![Azure AD](/img/projbobcat/installationAndConfig/configMSAuth/azure_ad.png)
-
-您将会看到类似于下面的页面
-
-![Azure Portal](/img/projbobcat/installationAndConfig/configMSAuth/step_2.png)
-
-接着点击左侧功能栏的 **应用注册**：
-
-![Azure Portal](/img/projbobcat/installationAndConfig/configMSAuth/reg_app.png)
-
-点击顶部工具栏的 **新注册**, 填写应用的名称. 并且在 **受支持的账户类型** 中选择 **仅 Microsoft 个人账户**.
-由于我们不使用基于 URI 回调的认证方式. 因此, 您不需要填写表单下方的 **重定向 URI**.
-
-::: warning
-请仔细核对表单中的信息, 否则可能会导致后续的步骤出现意料之外的问题.
-:::
-
-![Azure Portal](/img/projbobcat/installationAndConfig/configMSAuth/step_3.png)
-
-点击创建后, 等待 Azure AD 完成应用的创建. 在创建完成后, 网页会将您重定向至该应用的详细页面：
-
-![Azure Portal](/img/projbobcat/installationAndConfig/configMSAuth/step_4.png)
-
-接着点击左侧栏的 **身份验证**：
-
-![Azure Portal](/img/projbobcat/installationAndConfig/configMSAuth/identity_verification.png)
-
-接着在右侧找到 **高级设置** 板块, 确保板块中的 **高级 SDK 支持** 和 **允许公共客户端流** 为开启状态.
-如果他们没有开启, 请手动将他们打开.
-
-![Azure Portal](/img/projbobcat/installationAndConfig/configMSAuth/id_advanced_settings.png)
-
-接着点击下方的保存按钮, 等待保存完成.
-
-## 查看 Client ID
-
-恭喜！您已经完成了 Azure 的应用注册, 接下来您只需要前往 **概述** 页面查看应用的 Client ID.
-点击左侧栏的 **概述** 按钮, 即可查看应用的基础信息：
-
-![Azure Portal](/img/projbobcat/installationAndConfig/configMSAuth/about.png)
-
-在右侧您会看到应用的详细信息, 在 **概要** 中找到 **应用程序(客户端) ID**,
-该 ID 将是您需要在 [微软验证器配置](/ruRU/projbobcat/installationAndConfig) 阶段需要使用到的 Client ID.
-
-![Azure Portal](/img/projbobcat/installationAndConfig/configMSAuth/about_block.png)
 
 ---
 
